@@ -1,2 +1,2 @@
-# text_based_rpg
+# text-based-rpg
 A text based rpg.
