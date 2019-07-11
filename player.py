@@ -1,5 +1,6 @@
 from random import randint
 
+
 # Class for player
 class Player:
     def __init__(self, name, difficulty):
@@ -47,11 +48,11 @@ class Player:
 
             self.exp_req = self.lvl * 10
 
-	# Updates everything about the player
-	def update(self):
-		self.calculate_final_stats()
-		self.calculate_lvl()
-			
+    # Updates everything about the player
+    def update(self):
+        self.calculate_final_stats()
+        self.calculate_lvl()
+
     # Displays player stats
     def display(self):
         print(self.name)
