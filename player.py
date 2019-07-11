@@ -7,6 +7,7 @@ class Player:
         self.name = name
         self.difficulty = difficulty
 
+        # Variables to store base stats
         self.hp_max_base = int(round(100 * self.difficulty))
         self.mp_max_base = int(round(100 * self.difficulty))
         self.hp_base = self.hp_max_base
@@ -14,6 +15,7 @@ class Player:
         self.attack_base = int(round(10 * self.difficulty))
         self.defense_base = 0
 
+        # Variables to store final stats; will be used in the future for equipment, status effects, etc
         self.hp_max = self.hp_max_base
         self.mp_max = self.mp_max_base
         self.hp = self.hp_base
@@ -42,8 +44,13 @@ class Player:
             self.lvl += 1
             self.exp -= self.exp_req
 
-            self.hp_max_base += randint(5, 15)
-            self.mp_max_base += randint(5, 15)
+            # Increases base stats
+            x = randint(5, 15)
+            self.hp_max_base += x
+            self.hp_base += x
+            x = randint(5, 15)
+            self.mp_max_base += x
+            self.mp_base += x
             self.attack_base += randint(1, 3)
 
             self.exp_req = self.lvl * 10
