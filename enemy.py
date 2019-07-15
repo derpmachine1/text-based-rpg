@@ -1,8 +1,12 @@
-# Class for enemy
-class Enemy:
-    def __init__(self, name, hp_max, mp_max, attack, defense):
-        self.name = name
+from entity import Entity
 
+
+# Class for enemy
+class Enemy(Entity):
+    def __init__(self, name, hp_max, mp_max, attack, defense):
+        super().__init__(name)
+
+        # Variables to store stats
         self.hp_max = hp_max
         self.mp_max = mp_max
         self.hp = self.hp_max

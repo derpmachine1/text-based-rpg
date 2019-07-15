@@ -1,10 +1,12 @@
+from entity import Entity
 from random import randint
 
 
 # Class for player
-class Player:
+class Player(Entity):
     def __init__(self, name, difficulty):
-        self.name = name
+        super().__init__(name)
+
         self.difficulty = difficulty
 
         # Variables to store base stats
@@ -68,3 +70,6 @@ class Player:
         print("{:16}".format("MP: ") + "{:>16}".format(str(self.mp) + "/" + str(self.mp_max)))
         print("{:16}".format("ATT: ") + "{:>16}".format(str(self.attack)))
         print("{:16}".format("DEF: ") + "{:>16}".format(str(self.defense)))
+
+    def hp(self):
+        return self.hp
