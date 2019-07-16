@@ -1,12 +1,23 @@
-import player
+from player import Player
+from enemy import Enemy
 from time import sleep
-
-player_1 = player.Player("Player 1", 1)
 
 stage = 1  # Stage of the game
 phase = 0  # Stores whose turn it is
 
+players = list()
+enemies = list()
+
+players.append(Player("Player 1", 1))
+
 while True:
-    player_1.update()
-    player_1.display()
-    sleep(0.1)
+    for player in players:
+        player.update()
+        player.display()
+        print("")
+
+    for enemy in enemies:
+        enemy.display()
+        print("")
+
+    input()
