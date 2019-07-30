@@ -22,3 +22,9 @@ class Entity:
 
     def get_defense(self):
         return self.defense
+
+    def change_hp(self, d_hp):
+        self.hp += d_hp
+
+    def change_mp(self, d_mp):
+        self.mp += d_mp

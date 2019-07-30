@@ -70,6 +70,3 @@ class Player(Entity):
         print("{:16}".format("MP: ") + "{:>16}".format(str(self.mp) + "/" + str(self.mp_max)))
         print("{:16}".format("ATT: ") + "{:>16}".format(str(self.attack)))
         print("{:16}".format("DEF: ") + "{:>16}".format(str(self.defense)))
-
-    def hp(self):
-        return self.hp
