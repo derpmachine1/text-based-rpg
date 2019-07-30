@@ -64,9 +64,6 @@ class Player(Entity):
 
     # Displays player stats
     def display(self):
-        print(self.name)
-        print("{:16}".format("LVL " + str(self.lvl) + ":") + "{:>16}".format(str(self.exp) + "/" + str(self.exp_req)))
-        print("{:16}".format("HP: ") + "{:>16}".format(str(self.hp) + "/" + str(self.hp_max)))
-        print("{:16}".format("MP: ") + "{:>16}".format(str(self.mp) + "/" + str(self.mp_max)))
-        print("{:16}".format("ATT: ") + "{:>16}".format(str(self.attack)))
-        print("{:16}".format("DEF: ") + "{:>16}".format(str(self.defense)))
+        print("| {:32} | {:8}{:>24} |".format(self.name, "LVL " + str(self.lvl) + ":", str(self.exp) + "/" + str(self.exp_req)))
+        print("| {:8}{:>24} | {:8}{:>24} |".format("HP:", str(self.hp) + "/" + str(self.hp_max), "MP:", str(self.mp) + "/" + str(self.mp_max)))
+        print("| {:8}{:>24} | {:8}{:>24} |".format("ATT:", str(self.attack), "DEF:", str(self.defense)))

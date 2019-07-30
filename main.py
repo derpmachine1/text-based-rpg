@@ -9,15 +9,16 @@ players = list()
 enemies = list()
 
 players.append(Player("Player 1", 1))
+enemies.append(Enemy("Dummy", 10, 0, 1, 0))
 
 while True:
     for player in players:
         player.update()
-        player.display()
         print("")
+        player.display()
 
     for enemy in enemies:
-        enemy.display()
         print("")
+        enemy.display()
 
     input()
