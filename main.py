@@ -2,6 +2,17 @@ from player import Player
 from enemy import Enemy
 from time import sleep
 
+
+def display():
+    for player in players:
+        print("")
+        player.display()
+
+    for enemy in enemies:
+        print("")
+        enemy.display()
+
+
 stage = 1  # Stage of the game
 phase = 0  # Stores whose turn it is
 
@@ -14,11 +25,11 @@ enemies.append(Enemy("Dummy", 10, 0, 1, 0))
 while True:
     for player in players:
         player.update()
-        print("")
-        player.display()
+        display()
+        print("\n{}'s turn.".format(player.get_name()))
 
     for enemy in enemies:
-        print("")
-        enemy.display()
+        display()
+        print("\n{}'s turn.".format(enemy.get_name()))
 
     input()

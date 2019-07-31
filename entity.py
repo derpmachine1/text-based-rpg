@@ -11,6 +11,9 @@ class Entity:
         self.attack = int()
         self.defense = int()
 
+    def get_name(self):
+        return self.name
+
     def get_hp(self):
         return self.hp
 
