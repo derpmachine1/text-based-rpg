@@ -31,3 +31,11 @@ class Entity:
 
     def change_mp(self, d_mp):
         self.mp += d_mp
+
+    # Attacks another entity, factoring own attack and enemy defense
+    def attack_entity(self, entity):
+        entity.change_hp(-max(0, self.attack + entity.get_defense()))
+
+    # Simulates attacking another entity and returns damage that would be done
+    def attack_entity_damage(self, entity):
+        return max(0, self.attack + entity.get_defense())
