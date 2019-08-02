@@ -14,8 +14,8 @@ class Enemy(Entity):
         self.attack = attack
         self.defense = defense
 
-    # Displays enemy stats
-    def display(self):
-        print("| {:32} | {:32} |".format(self.name, ""))
+    # Displays enemy stats; accepts index of enemy to allow function to display location
+    def display(self, index):
+        print("| {:32} | {:32} |".format(self.name, "LOCATION " + str(index + 1)))
         print("| {:8}{:>24} | {:8}{:>24} |".format("HP:", str(self.hp) + "/" + str(self.hp_max), "MP:", str(self.mp) + "/" + str(self.mp_max)))
         print("| {:8}{:>24} | {:8}{:>24} |".format("ATT:", str(self.attack), "DEF:", str(self.defense)))

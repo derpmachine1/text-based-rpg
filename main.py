@@ -4,13 +4,13 @@ from time import sleep
 
 
 def display():
-    for player in players:
+    for p in players:
         print("")
-        player.display()
+        p.display()
 
-    for enemy in enemies:
+    for e in range(len(enemies)):
         print("")
-        enemy.display()
+        enemies[e].display(e)
 
 
 stage = 1  # Stage of the game
@@ -23,24 +23,24 @@ players.append(Player("Player 1", 1))
 enemies.append(Enemy("Dummy", 10, 0, 1, 0))
 
 while True:
-    for player in players:
-        player.update()
+    for p in players:
+        p.update()
         display()
 
-        print("\n{}'s turn.".format(player.get_name()))
+        print("\n{}'s turn.".format(p.get_name()))
 
         valid_input = False
         while not valid_input:
-            player_input = input("Type 'A' to attack.").strip()
-            if player_input.lower() == 'a':
+            p_input = input("Type 'A' to attack.").strip()
+            if p_input.lower() == 'a':
                 print("Attacked.")
                 valid_input = True
             else:
                 print("Invalid response.")
 
-    for enemy in enemies:
+    for e in enemies:
         display()
 
-        print("\n{}'s turn.".format(enemy.get_name()))
+        print("\n{}'s turn.".format(e.get_name()))
 
     input()
