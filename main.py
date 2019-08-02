@@ -26,10 +26,21 @@ while True:
     for player in players:
         player.update()
         display()
+
         print("\n{}'s turn.".format(player.get_name()))
+
+        valid_input = False
+        while not valid_input:
+            player_input = input("Type 'A' to attack.").strip()
+            if player_input.lower() == 'a':
+                print("Attacked.")
+                valid_input = True
+            else:
+                print("Invalid response.")
 
     for enemy in enemies:
         display()
+
         print("\n{}'s turn.".format(enemy.get_name()))
 
     input()
