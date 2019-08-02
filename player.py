@@ -10,11 +10,11 @@ class Player(Entity):
         self.difficulty = difficulty
 
         # Variables to store base stats
-        self.hp_max_base = int(round(100 * self.difficulty))
-        self.mp_max_base = int(round(100 * self.difficulty))
+        self.hp_max_base = int(round(100 / self.difficulty))
+        self.mp_max_base = int(round(100 / self.difficulty))
         self.hp_base = self.hp_max_base
         self.mp_base = self.mp_max_base
-        self.attack_base = int(round(10 * self.difficulty))
+        self.attack_base = int(round(10 / self.difficulty))
         self.defense_base = 0
 
         # Variables to store final stats; will be used in the future for equipment, status effects, etc
