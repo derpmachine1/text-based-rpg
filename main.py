@@ -29,12 +29,25 @@ while True:
 
         print("\n{}'s turn.".format(p.get_name()))
 
-        valid_input = False
-        while not valid_input:
+        # Gets player input
+        while True:
             p_input = input("Type 'A' to attack.").strip()
             if p_input.lower() == 'a':
-                print("Attacked.")
-                valid_input = True
+                # If more than 1 enemy, asks which enemy to target
+                if len(enemies) > 1:
+                    while True:
+                        p_input = input("Type location of enemy to target.").strip()
+                        try:
+                            p_input = int(p_input) - 1  # Calculates actual index by subtracting location by 1
+                            enemies[p_input].change_hp(-p.get_attack())  # Reduces enemy hp by player attack
+                            print("Attacked {}.".format(enemies[p_input].get_name()))
+                            break
+                        except ValueError:
+                            print("Invalid response.")
+                else:
+                    enemies[0].change_hp(-p.get_attack())  # Reduces enemy hp by player attack
+                    print("Attacked {}.".format(enemies[0].get_name()))
+                    break
             else:
                 print("Invalid response.")
 
