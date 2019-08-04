@@ -11,6 +11,12 @@ class Entity:
         self.attack = int()
         self.defense = int()
 
+    def is_dead(self):
+        if self.hp <= 0:
+            return True
+        else:
+            return False
+
     def get_name(self):
         return self.name
 

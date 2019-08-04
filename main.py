@@ -13,6 +13,18 @@ def display():
         enemies[e].display(e)
 
 
+def check_deaths():
+    for p in range(len(players)):
+        if players[p].is_dead():
+            print("{} was defeated.".format(players[p].get_name()))
+            del players[p]
+
+    for e in range(len(enemies)):
+        if enemies[e].is_dead():
+            print("{} was defeated.".format(enemies[e].get_name()))
+            del enemies[e]
+
+
 stage = 1  # Stage of the game
 
 players = list()
@@ -22,6 +34,7 @@ players.append(Player("Player 1", 1))
 enemies.append(Enemy("Dummy", 25, 0, 5, 0))
 
 while True:
+    # Iterate through players' actions
     for p in players:
         p.update()
         display()
@@ -51,9 +64,12 @@ while True:
             else:
                 print("Invalid response.")
 
+        check_deaths()
+
+    # Iterate through enemies' actions
     for e in enemies:
         display()
 
         print("\n{}'s turn.".format(e.get_name()))
 
-    input()
+        check_deaths()
