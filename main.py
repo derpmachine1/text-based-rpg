@@ -44,7 +44,6 @@ while True:
         # Gets player input
         while True:
             p_input = input("Type 'A' to attack.").strip()
-
             if p_input.lower() == 'a':
                 # If more than 1 enemy, asks which one to target
                 if len(enemies) > 1:
@@ -72,4 +71,8 @@ while True:
 
         print("\n{}'s turn.".format(e.get_name()))
 
+        # Enemy actions
+        e.attack_entity(players[0])
+        print("Attacked {} for {} damage.".format(players[0].get_name(), e.attack_entity_damage(players[0])))
+    
         check_deaths()
