@@ -1,6 +1,7 @@
 from player import Player
 from enemy import Enemy
 from time import sleep
+from random import randint
 
 
 def display():
@@ -34,14 +35,14 @@ players.append(Player("Player 1", 1))
 enemies.append(Enemy("Dummy", 25, 0, 5, 0))
 
 while True:
-    # Iterate through players' actions
+    # Iterates through players' actions
     for p in players:
         p.update()
         display()
 
         print("\n{}'s turn.".format(p.get_name()))
 
-        # Gets player input
+        # Gets player's input
         while True:
             p_input = input("Type 'A' to attack.").strip()
             if p_input.lower() == 'a':
@@ -65,14 +66,19 @@ while True:
 
         check_deaths()
 
-    # Iterate through enemies' actions
+    # Iterates through enemies' actions
     for e in enemies:
         display()
 
         print("\n{}'s turn.".format(e.get_name()))
 
-        # Enemy actions
-        e.attack_entity(players[0])
-        print("Attacked {} for {} damage.".format(players[0].get_name(), e.attack_entity_damage(players[0])))
+        # Enemy's actions
+        if len(players) > 1:
+            target = randint(0, len(players) - 1)
+            e.attack_entity(players[target])
+            print("Attacked {} for {} damage.".format(players[target].get_name(), e.attack_entity_damage(players[target])))
+        else:
+            e.attack_entity(players[0])
+            print("Attacked {} for {} damage.".format(players[0].get_name(), e.attack_entity_damage(players[0])))
     
         check_deaths()
