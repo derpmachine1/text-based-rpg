@@ -1,7 +1,7 @@
-from player import Player
-from enemy import Enemy
 from time import sleep
 from random import randint
+from player import Player
+from enemy import Enemy
 
 
 def display():
@@ -42,14 +42,17 @@ while True:
 
         print("\n{}'s turn.".format(p.get_name()))
 
-        # Gets player's input
+        # Gets player's input, keeps trying until input is valid
         while True:
             p_input = input("Type 'A' to attack.").strip()
+            
             if p_input.lower() == 'a':
-                # If more than 1 enemy, asks which one to target
+                # If more than 1 enemy, asks which one to target; else, targets only enemy
                 if len(enemies) > 1:
+                    # Gets player's input, keeps trying until input is valid (a number)
                     while True:
                         p_input = input("Type location of enemy to target.").strip()
+                        
                         try:
                             p_input = int(p_input) - 1  # Calculates actual index by subtracting location by 1
                             p.attack_entity(enemies[p_input])
