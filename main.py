@@ -76,8 +76,15 @@ while True:
         print("\n{}'s turn.".format(e.get_name()))
 
         # Enemy's actions
-        if len(players) > 1:
-            target = randint(0, len(players) - 1)
+        if len(players) > 1:            
+            # Targets player that would end up with the lowest health if attacked
+            target = 0
+            target_hp = players[0].get_hp() - e.attack_entity_damage(players[0])
+            for p in range(1, len(players)):
+                if players[p].get_hp() - e.attack_entity_damage(players[p]) < target_hp:
+                    target = p
+                    target_hp = players[p].get_hp() - e.attack_entity_damage(players[p])
+            
             e.attack_entity(players[target])
             print("Attacked {} for {} damage.".format(players[target].get_name(), e.attack_entity_damage(players[target])))
         else:
