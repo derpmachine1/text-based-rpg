@@ -35,8 +35,10 @@ delay = 0.5  # Time delay between text
 players = list()
 enemies = list()
 
-players.append(Player("Player 1", 1))
-enemies.append(Enemy("Dummy", 25, 0, 5, 0))
+players.append(Player("Player1", 1))
+# players.append(Player("Player2", 1))
+enemies.append(Enemy("Dummy1", 25, 0, 5, 0))
+enemies.append(Enemy("Dummy2", 25, 0, 5, 0))
 
 while True:
     # Iterates through players' actions
@@ -68,6 +70,10 @@ while True:
                         except ValueError:
                             print("Invalid response.")
                             sleep(delay)
+                        except IndexError:
+                            print("Invalid response.")
+                            sleep(delay)
+                    break
                 # If just 1 enemy, automatically targets it
                 else:
                     player.attack_entity(enemies[0])
