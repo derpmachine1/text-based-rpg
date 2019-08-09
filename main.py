@@ -4,10 +4,11 @@ from player import Player
 from enemy import Enemy
 
 
+# Displays stats of all players and enemies
 def display():
-    for p in players:
+    for player in players:
         print("")
-        p.display()
+        player.display()
 
     for e in range(len(enemies)):
         print("")
@@ -36,33 +37,34 @@ enemies.append(Enemy("Dummy", 25, 0, 5, 0))
 
 while True:
     # Iterates through players' actions
-    for p in players:
-        p.update()
+    for player in players:
+        player.update()
         display()
 
-        print("\n{}'s turn.".format(p.get_name()))
+        print("\n{}'s turn.".format(player.get_name()))
 
         # Gets player's input, keeps trying until input is valid
         while True:
             p_input = input("Type 'A' to attack.").strip()
             
             if p_input.lower() == 'a':
-                # If more than 1 enemy, asks which one to target; else, targets only enemy
+                # If more than 1 enemy, asks which one to target
                 if len(enemies) > 1:
-                    # Gets player's input, keeps trying until input is valid (a number)
+                    # Gets player's input, keeps trying until input is valid
                     while True:
                         p_input = input("Type location of enemy to target.").strip()
                         
                         try:
                             p_input = int(p_input) - 1  # Calculates actual index by subtracting location by 1
-                            p.attack_entity(enemies[p_input])
-                            print("Attacked {} for {} damage.".format(enemies[p_input].get_name(), p.attack_entity_damage(enemies[p_input])))
+                            player.attack_entity(enemies[p_input])
+                            print("Attacked {} for {} damage.".format(enemies[p_input].get_name(), player.attack_entity_damage(enemies[p_input])))
                             break
                         except ValueError:
                             print("Invalid response.")
+                # If just 1 enemy, automatically targets it
                 else:
-                    p.attack_entity(enemies[0])
-                    print("Attacked {} for {} damage.".format(enemies[0].get_name(), p.attack_entity_damage(enemies[0])))
+                    player.attack_entity(enemies[0])
+                    print("Attacked {} for {} damage.".format(enemies[0].get_name(), player.attack_entity_damage(enemies[0])))
                     break
             else:
                 print("Invalid response.")
@@ -70,25 +72,29 @@ while True:
         check_deaths()
 
     # Iterates through enemies' actions
-    for e in enemies:
+    for enemy in enemies:
         display()
 
-        print("\n{}'s turn.".format(e.get_name()))
+        print("\n{}'s turn.".format(enemy.get_name()))
 
-        # Enemy's actions
+        # If more than 1 player, targets player that would end up with the lowest health if attacked
         if len(players) > 1:            
-            # Targets player that would end up with the lowest health if attacked
-            target = 0
-            target_hp = players[0].get_hp() - e.attack_entity_damage(players[0])
+            target = 0  # Index of target
+
+            # Stores resulting health if first player was attacked
+            target_hp = players[0].get_hp() - enemy.attack_entity_damage(players[0])
+
+            # Iterates starting from second player
             for p in range(1, len(players)):
-                if players[p].get_hp() - e.attack_entity_damage(players[p]) < target_hp:
+                if players[p].get_hp() - enemy.attack_entity_damage(players[p]) < target_hp:
                     target = p
-                    target_hp = players[p].get_hp() - e.attack_entity_damage(players[p])
+                    target_hp = players[p].get_hp() - enemy.attack_entity_damage(players[p])
             
-            e.attack_entity(players[target])
-            print("Attacked {} for {} damage.".format(players[target].get_name(), e.attack_entity_damage(players[target])))
+            enemy.attack_entity(players[target])
+            print("Attacked {} for {} damage.".format(players[target].get_name(), enemy.attack_entity_damage(players[target])))
+        # If just 1 player, automatically targets it
         else:
-            e.attack_entity(players[0])
-            print("Attacked {} for {} damage.".format(players[0].get_name(), e.attack_entity_damage(players[0])))
+            enemy.attack_entity(players[0])
+            print("Attacked {} for {} damage.".format(players[0].get_name(), enemy.attack_entity_damage(players[0])))
     
         check_deaths()
