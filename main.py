@@ -13,21 +13,24 @@ def display():
     for e in range(len(enemies)):
         print("")
         enemies[e].display(e)
-
+    
 
 def check_deaths():
     for p in range(len(players)):
         if players[p].is_dead():
             print("{} was defeated.".format(players[p].get_name()))
             del players[p]
+            sleep(delay)
 
     for e in range(len(enemies)):
         if enemies[e].is_dead():
             print("{} was defeated.".format(enemies[e].get_name()))
             del enemies[e]
+            sleep(delay)
 
 
 stage = 1  # Stage of the game
+delay = 0.5  # Time delay between text
 
 players = list()
 enemies = list()
@@ -42,6 +45,7 @@ while True:
         display()
 
         print("\n{}'s turn.".format(player.get_name()))
+        sleep(delay)
 
         # Gets player's input, keeps trying until input is valid
         while True:
@@ -53,21 +57,26 @@ while True:
                     # Gets player's input, keeps trying until input is valid
                     while True:
                         p_input = input("Type location of enemy to target.").strip()
+                        sleep(delay)
                         
                         try:
                             p_input = int(p_input) - 1  # Calculates actual index by subtracting location by 1
                             player.attack_entity(enemies[p_input])
                             print("Attacked {} for {} damage.".format(enemies[p_input].get_name(), player.attack_entity_damage(enemies[p_input])))
+                            sleep(delay)
                             break
                         except ValueError:
                             print("Invalid response.")
+                            sleep(delay)
                 # If just 1 enemy, automatically targets it
                 else:
                     player.attack_entity(enemies[0])
                     print("Attacked {} for {} damage.".format(enemies[0].get_name(), player.attack_entity_damage(enemies[0])))
+                    sleep(delay)
                     break
             else:
                 print("Invalid response.")
+                sleep(delay)
 
         check_deaths()
 
@@ -76,6 +85,7 @@ while True:
         display()
 
         print("\n{}'s turn.".format(enemy.get_name()))
+        sleep(delay)
 
         # If more than 1 player, targets player that would end up with the lowest health if attacked
         if len(players) > 1:            
@@ -92,9 +102,11 @@ while True:
             
             enemy.attack_entity(players[target])
             print("Attacked {} for {} damage.".format(players[target].get_name(), enemy.attack_entity_damage(players[target])))
+            sleep(delay)
         # If just 1 player, automatically targets it
         else:
             enemy.attack_entity(players[0])
             print("Attacked {} for {} damage.".format(players[0].get_name(), enemy.attack_entity_damage(players[0])))
+            sleep(delay)
     
         check_deaths()
