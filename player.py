@@ -67,3 +67,11 @@ class Player(Entity):
         print("| {:32} | {:8}{:>24} |".format(self.name, "LVL " + str(self.lvl) + ":", str(self.exp) + "/" + str(self.exp_req)))
         print("| {:8}{:>24} | {:8}{:>24} |".format("HP:", str(self.hp) + "/" + str(self.hp_max), "MP:", str(self.mp) + "/" + str(self.mp_max)))
         print("| {:8}{:>24} | {:8}{:>24} |".format("ATT:", str(self.attack), "DEF:", str(self.defense)))
+
+    def change_hp(self, d_hp):
+        self.hp_base += d_hp
+        self.hp += d_hp
+
+    def change_mp(self, d_mp):
+        self.mp_base = d_mp
+        self.mp += d_mp
