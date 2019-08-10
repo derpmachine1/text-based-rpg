@@ -13,6 +13,8 @@ def display():
     for e in range(len(enemies)):
         print("")
         enemies[e].display(e)
+
+    sleep(delay)
     
 
 def check_deaths():
@@ -29,18 +31,50 @@ def check_deaths():
             sleep(delay)
 
 
-stage = 1  # Stage of the game
-delay = 0.5  # Time delay between text
+delay = 1  # Time delay between text
+
+level = 1  # Stage of the game
+encounters = 0  # Number of enemy encounters in current level thus far
+enemy_data = list()  # Stores data of all possible enemies on current level
 
 players = list()
 enemies = list()
 
 players.append(Player("Player1", 1))
 # players.append(Player("Player2", 1))
-enemies.append(Enemy("Dummy1", 25, 0, 5, 0))
-enemies.append(Enemy("Dummy2", 25, 0, 5, 0))
+
+
+# Setup for first level
+print("Entered level 1.")
+sleep(delay)
+with open("enemy_data/1.txt", 'r') as f_in:
+    enemy_data = [enemy.split() for enemy in f_in.readlines()]
 
 while True:
+    # If finished level
+    if encounters == 10:
+        print("Finished level {}.".format(level))
+        sleep(delay)
+
+        level += 1
+        encounters = 0
+
+        print("Entered level {}.".format(level))
+        sleep(delay)
+
+        # Reads and stores enemy data for new level
+        with open("enemy_data/{}.txt".format(level), 'r') as f_in:
+            enemy_data = [enemy.split() for enemy in f_in.readlines()]
+
+    # If no enemies left, create more enemies
+    if len(enemies) == 0:
+        encounters += 1
+
+        new_enemy = enemy_data[randint(0, len(enemy_data) - 1)]
+        enemies.append(Enemy(new_enemy[0], int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4])))
+        print("Encountered {}.".format(new_enemy[0]))
+        sleep(delay)
+
     # Iterates through players' actions
     for player in players:
         player.update()
