@@ -1,3 +1,4 @@
-Dummy1 25 0 5 0
-Dummy2 35 0 3 0
-Dummy3 15 0 10 0
+Giant_Rat 50 0 10 0
+Brown_Rat 25 0 5 0
+Grizzled_Rat 35 0 3 0
+Albino_Rat 15 0 10 0

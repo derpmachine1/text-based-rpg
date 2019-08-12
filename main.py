@@ -51,8 +51,8 @@ with open("enemy_data/1.txt", 'r') as f_in:
     enemy_data = [enemy.split() for enemy in f_in.readlines()]
 
 while True:
-    # If finished level
-    if encounters == 10:
+    # If finished level (4 normal encounters + boss encounter)
+    if encounters == 5:
         print("Finished level {}.".format(level))
         sleep(delay)
 
@@ -70,10 +70,17 @@ while True:
     if len(enemies) == 0:
         encounters += 1
 
-        new_enemy = enemy_data[randint(0, len(enemy_data) - 1)]
-        enemies.append(Enemy(new_enemy[0], int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4])))
-        print("Encountered {}.".format(new_enemy[0]))
-        sleep(delay)
+        # Spawns boss after 4 encounters
+        if encounters == 4:
+            new_enemy = enemy_data[0]
+            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4])))
+            print("Boss encounter; encountered {}.".format(new_enemy[0]))
+            sleep(delay)
+        else:
+            new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
+            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4])))
+            print("Encountered {}.".format(new_enemy[0]))
+            sleep(delay)
 
     # Iterates through players' actions
     for player in players:
