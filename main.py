@@ -31,9 +31,9 @@ def check_deaths():
             sleep(delay)
 
 
-delay = 1  # Time delay between text
+delay = 0.75  # Time delay between text
 
-level = 1  # Stage of the game
+stage = 1  # Stage of the game
 encounters = 0  # Number of enemy encounters in current level thus far
 enemy_data = list()  # Stores data of all possible enemies on current level
 
@@ -44,8 +44,8 @@ players.append(Player("Player1", 1))
 # players.append(Player("Player2", 1))
 
 
-# Setup for first level
-print("Entered level 1.")
+# Setup for first stage
+print("Entering floor 1.")
 sleep(delay)
 with open("enemy_data/1.txt", 'r') as f_in:
     enemy_data = [enemy.split() for enemy in f_in.readlines()]
@@ -53,17 +53,17 @@ with open("enemy_data/1.txt", 'r') as f_in:
 while True:
     # If finished level (4 normal encounters + boss encounter)
     if encounters == 5:
-        print("Finished level {}.".format(level))
+        print("Floor {} cleared.".format(stage))
         sleep(delay)
 
-        level += 1
+        stage += 1
         encounters = 0
 
-        print("Entered level {}.".format(level))
+        print("Entering floor {}.".format(stage))
         sleep(delay)
 
         # Reads and stores enemy data for new level
-        with open("enemy_data/{}.txt".format(level), 'r') as f_in:
+        with open("enemy_data/{}.txt".format(stage), 'r') as f_in:
             enemy_data = [enemy.split() for enemy in f_in.readlines()]
 
     # If no enemies left, create more enemies
@@ -74,12 +74,12 @@ while True:
         if encounters == 4:
             new_enemy = enemy_data[0]
             enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4])))
-            print("Boss encounter; encountered {}.".format(new_enemy[0]))
+            print("Encountered floor boss, {}.".format(new_enemy[0].replace('_', ' ')))
             sleep(delay)
         else:
             new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
             enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4])))
-            print("Encountered {}.".format(new_enemy[0]))
+            print("Encountered {}.".format(new_enemy[0].replace('_', ' ')))
             sleep(delay)
 
     # Iterates through players' actions
@@ -109,10 +109,10 @@ while True:
                             sleep(delay)
                             break
                         except ValueError:
-                            print("Invalid response.")
+                            print("Invalid response: Expected whole number.")
                             sleep(delay)
                         except IndexError:
-                            print("Invalid response.")
+                            print("Invalid response: No enemy at inputted location.")
                             sleep(delay)
                     break
                 # If just 1 enemy, automatically targets it
