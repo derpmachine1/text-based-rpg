@@ -29,6 +29,11 @@ class Player(Entity):
         self.exp_req = 0
         self.lvl = 1
 
+    # Updates everything about the player
+    def update(self):
+        self.calculate_final_stats()
+        self.calculate_lvl()
+
     # Adds modifiers to base stats
     def calculate_final_stats(self):
         self.hp_max = self.hp_max_base
@@ -57,11 +62,6 @@ class Player(Entity):
 
             self.exp_req = self.lvl * 10
 
-    # Updates everything about the player
-    def update(self):
-        self.calculate_final_stats()
-        self.calculate_lvl()
-
     # Displays player stats
     def display(self):
         print("| {:32} | {:8}{:>24} |".format(self.name, "LVL " + str(self.lvl) + ":", str(self.exp) + "/" + str(self.exp_req)))
@@ -75,3 +75,6 @@ class Player(Entity):
     def change_mp(self, d_mp):
         self.mp_base = d_mp
         self.mp += d_mp
+
+    def change_exp(self, d_exp):
+        self.exp += d_exp

@@ -21,17 +21,24 @@ def check_deaths():
     for p in range(len(players)):
         if players[p].is_dead():
             print("{} was defeated.".format(players[p].get_name()))
-            del players[p]
             sleep(delay)
+
+            del players[p]
 
     for e in range(len(enemies)):
         if enemies[e].is_dead():
             print("{} was defeated.".format(enemies[e].get_name()))
-            del enemies[e]
             sleep(delay)
 
+            for player in players:
+                player.change_exp(enemies[e].get_exp())
+                print("{} gained {} experience.".format(player.get_name(), enemies[e].get_exp()))
+                sleep(delay)
 
-delay = 0.75  # Time delay between text
+            del enemies[e]
+
+
+delay = 0.5  # Time delay between text
 
 stage = 1  # Stage of the game
 encounters = 0  # Number of enemy encounters in current level thus far
@@ -73,12 +80,12 @@ while True:
         # Spawns boss after 4 encounters
         if encounters == 4:
             new_enemy = enemy_data[0]
-            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4])))
+            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5]), int(new_enemy[6])))
             print("Encountered floor boss, {}.".format(new_enemy[0].replace('_', ' ')))
             sleep(delay)
         else:
             new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
-            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4])))
+            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5]), int(new_enemy[6])))
             print("Encountered {}.".format(new_enemy[0].replace('_', ' ')))
             sleep(delay)
 
