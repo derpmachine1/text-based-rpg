@@ -14,7 +14,7 @@ class Player(Entity):
         self.mp_max_base = int(round(100 / self.difficulty))
         self.hp_base = self.hp_max_base
         self.mp_base = self.mp_max_base
-        self.attack_base = int(round(10 / self.difficulty))
+        self.attack_base = int(round(100 / self.difficulty))
         self.defense_base = 0
 
         # Variables to store final stats; will be used in the future for equipment, status effects, etc
@@ -67,6 +67,9 @@ class Player(Entity):
         print("| {:32} | {:8}{:>24} |".format(self.name, "LVL " + str(self.lvl) + ":", str(self.exp) + "/" + str(self.exp_req)))
         print("| {:8}{:>24} | {:8}{:>24} |".format("HP:", str(self.hp) + "/" + str(self.hp_max), "MP:", str(self.mp) + "/" + str(self.mp_max)))
         print("| {:8}{:>24} | {:8}{:>24} |".format("ATT:", str(self.attack), "DEF:", str(self.defense)))
+
+    def get_lvl(self):
+        return self.lvl
 
     def change_hp(self, d_hp):
         self.hp_base += d_hp

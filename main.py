@@ -1,5 +1,6 @@
 from time import sleep
 from random import randint
+from os import listdir
 from player import Player
 from enemy import Enemy
 
@@ -40,6 +41,7 @@ def check_deaths():
 
 delay = 0.5  # Time delay between text
 
+total_stages = len(listdir('enemy_data'))  # Total number of stages built into the game
 stage = 1  # Stage of the game
 encounters = 0  # Number of enemy encounters in current level thus far
 enemy_data = list()  # Stores data of all possible enemies on current level
@@ -63,15 +65,43 @@ while True:
         print("Floor {} cleared.".format(stage))
         sleep(delay)
 
-        stage += 1
-        encounters = 0
+        # Activates endless mode if finished all programmed stages
+        if stage == total_stages or stage == 0:
+            stage = 0
+            encounters = 0
 
-        print("Entering floor {}.".format(stage))
-        sleep(delay)
+            print("Entering endless floor.")
+            sleep(delay)
 
-        # Reads and stores enemy data for new level
-        with open("enemy_data/{}.txt".format(stage), 'r') as f_in:
-            enemy_data = [enemy.split() for enemy in f_in.readlines()]
+            # Randomly generates enemies scaled to level
+            average_lvl = sum([player.get_lvl() for player in players]) // len(players)
+            enemy_data = list()
+            enemy_data.append(["Boss",
+                               average_lvl * 10 + randint(80, 120),
+                               average_lvl * 10 + randint(80, 120),
+                               average_lvl * 1 + randint(8, 12),
+                               average_lvl * 1 + randint(4, 6),
+                               1,
+                               average_lvl * 3])
+            for i in range(10):
+                enemy_data.append(["Enemy",
+                                   average_lvl * 5 + randint(40, 60),
+                                   average_lvl * 5 + randint(40, 60),
+                                   average_lvl * 1 + randint(4, 6),
+                                   average_lvl * 1 + randint(1, 3),
+                                   1,
+                                   average_lvl])
+
+        else:
+            stage += 1
+            encounters = 0
+
+            print("Entering floor {}.".format(stage))
+            sleep(delay)
+
+            # Reads and stores enemy data for new level
+            with open("enemy_data/{}.txt".format(stage), 'r') as f_in:
+                enemy_data = [enemy.split() for enemy in f_in.readlines()]
 
     # If no enemies left, create more enemies
     if len(enemies) == 0:
