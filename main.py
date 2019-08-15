@@ -54,10 +54,11 @@ players.append(Player("Player1", 1))
 
 
 # Setup for first stage
-print("Entering floor 1.")
-sleep(delay)
-with open("enemy_data/1.txt", 'r') as f_in:
-    enemy_data = [enemy.split() for enemy in f_in.readlines()]
+enemy_data = list()
+with open("stage_data/1.txt", 'r') as f_in:
+    for enemy in f_in.readlines():
+        with open("enemy_data/{}.txt".format(enemy.split()[0])) as f_in2:
+            enemy_data.append(f_in2.readline().split())
 
 while True:
     # If finished level (4 normal encounters + boss encounter)
@@ -81,7 +82,6 @@ while True:
                                average_lvl * 10 + randint(30, 50),
                                average_lvl * 1 + randint(8, 12),
                                average_lvl * 1 + randint(4, 6),
-                               1,
                                average_lvl * 2])
             for i in range(10):
                 enemy_data.append(["Enemy",
@@ -89,7 +89,6 @@ while True:
                                    average_lvl * 5 + randint(15, 25),
                                    average_lvl * 1 + randint(4, 6),
                                    average_lvl * 1 + randint(2, 3),
-                                   1,
                                    average_lvl])
 
         else:
@@ -100,8 +99,11 @@ while True:
             sleep(delay)
 
             # Reads and stores enemy data for new level
-            with open("enemy_data/{}.txt".format(stage), 'r') as f_in:
-                enemy_data = [enemy.split() for enemy in f_in.readlines()]
+            enemy_data = list()
+            with open("stage_data/{}.txt".format(stage), 'r') as f_in:
+                for enemy in f_in.readlines():
+                    with open("enemy_data/{}.txt".format(enemy.split()[0])) as f_in2:
+                        enemy_data.append(f_in2.readline().split())
 
     # If no enemies left, create more enemies
     if len(enemies) == 0:
@@ -110,12 +112,12 @@ while True:
         # Spawns boss after 4 encounters
         if encounters == 4:
             new_enemy = enemy_data[0]
-            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5]), int(new_enemy[6])))
+            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
             print("Encountered floor boss, {}.".format(new_enemy[0].replace('_', ' ')))
             sleep(delay)
         else:
             new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
-            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5]), int(new_enemy[6])))
+            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
             print("Encountered {}.".format(new_enemy[0].replace('_', ' ')))
             sleep(delay)
 

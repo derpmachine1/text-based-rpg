@@ -1,1 +1,2 @@
+rat_king
 brown_rat 100

@@ -3,7 +3,7 @@ from entity import Entity
 
 # Class for enemy
 class Enemy(Entity):
-    def __init__(self, name, hp_max, mp_max, attack, defense, weight, exp):
+    def __init__(self, name, hp_max, mp_max, attack, defense, exp):
         super().__init__(name)
 
         # Variables to store stats
@@ -14,9 +14,7 @@ class Enemy(Entity):
         self.attack = attack
         self.defense = defense
 
-        # Enemy-specific variables
-        self.weight = weight  # Modifies how often it appears
-        self.exp = exp  # Exp given when killed
+        self.exp = exp
 
     # Displays enemy stats; accepts index of enemy to allow function to display location
     def display(self, index):
