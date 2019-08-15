@@ -77,18 +77,18 @@ while True:
             average_lvl = sum([player.get_lvl() for player in players]) // len(players)
             enemy_data = list()
             enemy_data.append(["Boss",
-                               average_lvl * 10 + randint(80, 120),
-                               average_lvl * 10 + randint(80, 120),
+                               average_lvl * 10 + randint(30, 50),
+                               average_lvl * 10 + randint(30, 50),
                                average_lvl * 1 + randint(8, 12),
                                average_lvl * 1 + randint(4, 6),
                                1,
-                               average_lvl * 3])
+                               average_lvl * 2])
             for i in range(10):
                 enemy_data.append(["Enemy",
-                                   average_lvl * 5 + randint(40, 60),
-                                   average_lvl * 5 + randint(40, 60),
+                                   average_lvl * 5 + randint(15, 25),
+                                   average_lvl * 5 + randint(15, 25),
                                    average_lvl * 1 + randint(4, 6),
-                                   average_lvl * 1 + randint(1, 3),
+                                   average_lvl * 1 + randint(2, 3),
                                    1,
                                    average_lvl])
 

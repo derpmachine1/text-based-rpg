@@ -10,11 +10,11 @@ class Player(Entity):
         self.difficulty = difficulty
 
         # Variables to store base stats
-        self.hp_max_base = int(round(100 / self.difficulty))
-        self.mp_max_base = int(round(100 / self.difficulty))
+        self.hp_max_base = int(round(20 / self.difficulty))
+        self.mp_max_base = int(round(20 / self.difficulty))
         self.hp_base = self.hp_max_base
         self.mp_base = self.mp_max_base
-        self.attack_base = int(round(100 / self.difficulty))
+        self.attack_base = int(round(5 / self.difficulty))
         self.defense_base = 0
 
         # Variables to store final stats; will be used in the future for equipment, status effects, etc
@@ -52,13 +52,13 @@ class Player(Entity):
             self.exp -= self.exp_req
 
             # Increases base stats
-            x = randint(5, 15)
+            x = randint(4, 8)
             self.hp_max_base += x
             self.hp_base += x
-            x = randint(5, 15)
+            x = randint(4, 8)
             self.mp_max_base += x
             self.mp_base += x
-            self.attack_base += randint(1, 3)
+            self.attack_base += randint(1, 2)
 
             self.exp_req = self.lvl * 10
 
