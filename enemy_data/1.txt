@@ -1,4 +1,0 @@
-Giant_Rat 25 0 4 0 0 20
-Brown_Rat 10 0 2 0 10 5
-Grizzled_Rat 15 0 1 0 10 5
-Albino_Rat 7 0 5 0 1 10
