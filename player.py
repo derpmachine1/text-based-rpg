@@ -14,7 +14,7 @@ class Player(Entity):
         self.mp_max_base = int(round(20 / self.difficulty))
         self.hp_base = self.hp_max_base
         self.mp_base = self.mp_max_base
-        self.attack_base = int(round(5 / self.difficulty))
+        self.attack_base = int(round(50 / self.difficulty))
         self.defense_base = 0
 
         # Variables to store final stats; will be used in the future for equipment, status effects, etc
@@ -29,10 +29,12 @@ class Player(Entity):
         self.exp_req = 0
         self.lvl = 1
 
+        self.equipment = list()
+
     # Updates everything about the player
     def update(self):
-        self.calculate_final_stats()
         self.calculate_lvl()
+        self.calculate_final_stats()
 
     # Adds modifiers to base stats
     def calculate_final_stats(self):
@@ -42,6 +44,14 @@ class Player(Entity):
         self.mp = self.mp_base
         self.attack = self.attack_base
         self.defense = self.defense_base
+
+        for equipment in self.equipment:
+            self.hp_max += equipment.get_d_hp()
+            self.mp_max += equipment.get_d_mp()
+            self.hp += equipment.get_d_hp()
+            self.mp += equipment.get_d_mp()
+            self.attack += equipment.get_d_attack()
+            self.defense += equipment.get_d_defense()
 
     # Calculates exp required to next level and handles level ups
     def calculate_lvl(self):
@@ -71,6 +81,9 @@ class Player(Entity):
     def get_lvl(self):
         return self.lvl
 
+    def get_equipment(self):
+        return self.equipment
+
     def change_hp(self, d_hp):
         self.hp_base += d_hp
         self.hp += d_hp
@@ -81,3 +94,6 @@ class Player(Entity):
 
     def change_exp(self, d_exp):
         self.exp += d_exp
+
+    def add_equipment(self, equipment):
+        self.equipment.append(equipment)

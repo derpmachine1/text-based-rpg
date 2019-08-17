@@ -1,0 +1,2 @@
+Brown_Rat 10 0 2 0 5
+stick 25
