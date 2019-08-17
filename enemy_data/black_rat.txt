@@ -1,1 +1,2 @@
 Black_Rat 8 0 4 0 5
+stick 25

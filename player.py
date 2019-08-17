@@ -14,7 +14,7 @@ class Player(Entity):
         self.mp_max_base = int(round(20 / self.difficulty))
         self.hp_base = self.hp_max_base
         self.mp_base = self.mp_max_base
-        self.attack_base = int(round(5 / self.difficulty))
+        self.attack_base = int(round(50 / self.difficulty))
         self.defense_base = 0
 
         # Variables to store final stats; will be used in the future for equipment, status effects, etc
@@ -28,6 +28,8 @@ class Player(Entity):
         self.exp = 0
         self.exp_req = 0
         self.lvl = 1
+
+        self.equipment = list()
 
     # Updates everything about the player
     def update(self):
@@ -81,3 +83,6 @@ class Player(Entity):
 
     def change_exp(self, d_exp):
         self.exp += d_exp
+
+    def add_equipment(self, equipment):
+        self.equipment.append(equipment)

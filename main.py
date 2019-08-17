@@ -3,6 +3,7 @@ from random import randint
 from os import listdir
 from player import Player
 from enemy import Enemy
+from equipment import Equipment
 
 
 # Displays stats of all players and enemies
@@ -32,9 +33,23 @@ def check_deaths():
             sleep(delay)
 
             for player in players:
+                # Experience gain
                 player.change_exp(enemies[e].get_exp())
                 print("{} gained {} experience.".format(player.get_name(), enemies[e].get_exp()))
                 sleep(delay)
+
+                # Rolls for items
+                with open("enemy_data/{}.txt".format(enemies[e].get_name().replace(' ', '_'))) as f_in:
+                    enemy = f_in.readlines()
+                    if len(enemy) > 1:  # Item drops of enemy are stored after first line
+                        for item_drop in enemy[1:]:
+                            if randint(1, int(item_drop.split()[1])) <= int(item_drop.split()[1]):
+                                with open("item_data/{}.txt".format(item_drop.split()[0])) as f_in2:
+                                    if f_in2.readline().strip() == "equipment":
+                                        new_item = f_in2.readline().split()
+                                        player.add_equipment(Equipment(new_item[0], int(new_item[1]), int(new_item[2]), int(new_item[3]), int(new_item[3])))
+                                        print("{} found {}.".format(player.get_name(), new_item[0]))
+                                        sleep(delay)
 
             del enemies[e]
 
