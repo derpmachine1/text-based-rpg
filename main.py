@@ -43,7 +43,7 @@ def check_deaths():
                     enemy = f_in.readlines()
                     if len(enemy) > 1:  # Item drops of enemy are stored after first line
                         for item_drop in enemy[1:]:
-                            if randint(1, int(item_drop.split()[1])) <= int(item_drop.split()[1]):
+                            if randint(1, 100) <= int(item_drop.split()[1]):
                                 with open("item_data/{}.txt".format(item_drop.split()[0])) as f_in2:
                                     if f_in2.readline().strip() == "equipment":
                                         new_item = f_in2.readline().split()
