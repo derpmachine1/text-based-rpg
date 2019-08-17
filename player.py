@@ -33,8 +33,8 @@ class Player(Entity):
 
     # Updates everything about the player
     def update(self):
-        self.calculate_final_stats()
         self.calculate_lvl()
+        self.calculate_final_stats()
 
     # Adds modifiers to base stats
     def calculate_final_stats(self):
@@ -44,6 +44,14 @@ class Player(Entity):
         self.mp = self.mp_base
         self.attack = self.attack_base
         self.defense = self.defense_base
+
+        for equipment in self.equipment:
+            self.hp_max += equipment.get_d_hp()
+            self.mp_max += equipment.get_d_mp()
+            self.hp += equipment.get_d_hp()
+            self.mp += equipment.get_d_mp()
+            self.attack += equipment.get_d_attack()
+            self.defense += equipment.get_d_defense()
 
     # Calculates exp required to next level and handles level ups
     def calculate_lvl(self):
