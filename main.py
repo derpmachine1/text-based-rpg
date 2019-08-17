@@ -47,8 +47,10 @@ def check_deaths():
                                 with open("item_data/{}.txt".format(item_drop.split()[0])) as f_in2:
                                     if f_in2.readline().strip() == "equipment":
                                         new_item = f_in2.readline().split()
-                                        player.add_equipment(Equipment(new_item[0], int(new_item[1]), int(new_item[2]), int(new_item[3]), int(new_item[3])))
-                                        print("{} found {}.".format(player.get_name(), new_item[0]))
+                                        player.add_equipment(Equipment(new_item[0], int(new_item[1]), int(new_item[2]), int(new_item[3]), int(new_item[4])))
+                                        print("{} found {}.".format(player.get_name(), player.get_equipment()[-1].get_name()))
+                                        sleep(delay)
+                                        player.get_equipment()[-1].display()
                                         sleep(delay)
 
             del enemies[e]
@@ -132,12 +134,12 @@ while True:
         if encounters == 4:
             new_enemy = enemy_data[0]
             enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
-            print("Encountered floor boss, {}.".format(new_enemy[0].replace('_', ' ')))
+            print("Encountered floor boss, {}.".format(enemies[-1].get_name()))
             sleep(delay)
         else:
             new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
             enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
-            print("Encountered {}.".format(new_enemy[0].replace('_', ' ')))
+            print("Encountered {}.".format(enemies[-1].get_name()))
             sleep(delay)
 
     # Iterates through players' actions

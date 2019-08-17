@@ -73,6 +73,9 @@ class Player(Entity):
     def get_lvl(self):
         return self.lvl
 
+    def get_equipment(self):
+        return self.equipment
+
     def change_hp(self, d_hp):
         self.hp_base += d_hp
         self.hp += d_hp
