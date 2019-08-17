@@ -1,2 +1,4 @@
-rat_king
-brown_rat 100
+rat_king 1
+brown_rat 5
+black_rat 3
+veteran_rat 2

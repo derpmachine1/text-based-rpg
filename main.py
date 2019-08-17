@@ -58,7 +58,9 @@ enemy_data = list()
 with open("stage_data/1.txt", 'r') as f_in:
     for enemy in f_in.readlines():
         with open("enemy_data/{}.txt".format(enemy.split()[0])) as f_in2:
-            enemy_data.append(f_in2.readline().split())
+            new_enemy = f_in2.readline().split()
+            for i in range(int(enemy.split()[1])):
+                enemy_data.append(new_enemy)
 
 while True:
     # If finished level (4 normal encounters + boss encounter)
@@ -103,7 +105,9 @@ while True:
             with open("stage_data/{}.txt".format(stage), 'r') as f_in:
                 for enemy in f_in.readlines():
                     with open("enemy_data/{}.txt".format(enemy.split()[0])) as f_in2:
-                        enemy_data.append(f_in2.readline().split())
+                        new_enemy = f_in2.readline().split()
+                        for i in range(int(enemy.split()[1])):
+                            enemy_data.append(new_enemy)
 
     # If no enemies left, create more enemies
     if len(enemies) == 0:
