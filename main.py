@@ -6,15 +6,6 @@ from enemy import Enemy
 from equipment import Equipment
 
 
-"""
-To-Do:
-let user request to see equipment
-implement only having one of each type of equipment
-levelup text
-lose condition
-"""
-
-
 # Displays stats of all players and enemies
 def display():
     for player in players:
@@ -136,7 +127,7 @@ while True:
                             enemy_data.append(new_enemy)
 
     # If no players left, lose
-    if len(players == 0):
+    if len(players) == 0:
         break
 
     # If no enemies left, create more enemies
@@ -165,7 +156,7 @@ while True:
 
         # Gets player's input, keeps trying until input is valid
         while True:
-            p_input = input("Type 'A' to attack.").strip()
+            p_input = input("'A' to attack, 'E' to check equipment.").strip()
             
             if p_input.lower() == 'a':
                 # If more than 1 enemy, asks which one to target
@@ -178,7 +169,7 @@ while True:
                         try:
                             p_input = int(p_input) - 1  # Calculates actual index by subtracting location by 1
                             player.attack_entity(enemies[p_input])
-                            print("Attacked {} for {} damage.".format(enemies[p_input].get_name(), player.attack_entity_damage(enemies[p_input])))
+                            print("{} attacked {} for {} damage.".format(player.get_name(), enemies[p_input].get_name(), player.attack_entity_damage(enemies[p_input])))
                             sleep(delay)
                             break
                         except ValueError:
@@ -191,11 +182,23 @@ while True:
                 # If just 1 enemy, automatically targets it
                 else:
                     player.attack_entity(enemies[0])
-                    print("Attacked {} for {} damage.".format(enemies[0].get_name(), player.attack_entity_damage(enemies[0])))
+                    print("{} attacked {} for {} damage.".format(player.get_name(), enemies[0].get_name(), player.attack_entity_damage(enemies[0])))
                     sleep(delay)
                     break
+
+            elif p_input.lower() == 'e':
+                if len(player.get_equipment()) == 0:
+                    print("{} has no equipment.".format(player.get_name()))
+                    sleep(delay)
+                else:
+                    print("{} has:".format(player.get_name()))
+                    sleep(delay)
+                    for equipment in player.get_equipment():
+                        equipment.display()
+                        sleep(delay)
+
             else:
-                print("Invalid response.")
+                print("Invalid response: Expected 'A' or 'E'.")
                 sleep(delay)
 
         check_deaths()
