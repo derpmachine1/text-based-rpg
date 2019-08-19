@@ -6,6 +6,15 @@ from enemy import Enemy
 from equipment import Equipment
 
 
+"""
+To-Do:
+let user request to see equipment
+implement only having one of each type of equipment
+levelup text
+lose condition
+"""
+
+
 # Displays stats of all players and enemies
 def display():
     for player in players:
@@ -126,6 +135,10 @@ while True:
                         for i in range(int(enemy.split()[1])):
                             enemy_data.append(new_enemy)
 
+    # If no players left, lose
+    if len(players == 0):
+        break
+
     # If no enemies left, create more enemies
     if len(enemies) == 0:
         encounters += 1
@@ -217,3 +230,5 @@ while True:
             sleep(delay)
     
         check_deaths()
+
+print("Game over.")
