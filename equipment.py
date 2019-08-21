@@ -3,8 +3,9 @@ from item import Item
 
 # Class for equipment: Player can only have one of each type; adds to stats
 class Equipment(Item):
-    def __init__(self, name, d_hp, d_mp, d_attack, d_defense):
+    def __init__(self, name, equip_type, d_hp, d_mp, d_attack, d_defense):
         super().__init__(name)
+        self.equip_type = equip_type
 
         # Variables to store how item changes stats of player
         self.d_hp = d_hp
@@ -35,6 +36,9 @@ class Equipment(Item):
     # Displays equipment stats
     def display(self):
         print("| {:16}   {:>48} |".format(self.name + ':', self.stats_str))
+
+    def get_type(self):
+        return self.equip_type
 
     def get_d_hp(self):
         return self.d_hp

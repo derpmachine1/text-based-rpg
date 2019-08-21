@@ -1,2 +1,2 @@
 equipment
-Stick 0 0 2 0
+Stick weapon 0 0 2 0

@@ -41,17 +41,54 @@ def check_deaths():
                 # Rolls for items
                 with open("enemy_data/{}.txt".format(enemies[e].get_name().replace(' ', '_'))) as f_in:
                     enemy = f_in.readlines()
-                    if len(enemy) > 1:  # Item drops of enemy are stored after first line
+                    if len(enemy) > 1:  # Item drops of enemy are stored after first line of enemy file
                         for item_drop in enemy[1:]:
                             if randint(1, 100) <= int(item_drop.split()[1]):
                                 with open("item_data/{}.txt".format(item_drop.split()[0])) as f_in2:
+                                    # For equipment items
                                     if f_in2.readline().strip() == "equipment":
                                         new_item = f_in2.readline().split()
-                                        player.add_equipment(Equipment(new_item[0], int(new_item[1]), int(new_item[2]), int(new_item[3]), int(new_item[4])))
-                                        print("{} found {}.".format(player.get_name(), player.get_equipment()[-1].get_name()))
-                                        sleep(delay)
-                                        player.get_equipment()[-1].display()
-                                        sleep(delay)
+
+                                        # If player does not already have an equipment item of the same type
+                                        if player.check_equipment_type(new_item[1]) == -1:
+                                            player.add_equipment(Equipment(new_item[0], new_item[1], int(new_item[2]), int(new_item[3]), int(new_item[4]), int(new_item[5])))
+                                            print("{} found {}.".format(player.get_name(), player.get_equipment()[-1].get_name()))
+                                            sleep(delay)
+                                            player.get_equipment()[-1].display()
+                                            sleep(delay)
+                                        # Else, asks player whether to replace it or not
+                                        else:
+                                            potential_equip = Equipment(new_item[0], new_item[1], int(new_item[2]), int(new_item[3]), int(new_item[4]), int(new_item[5]))
+                                            print("{} found {} but already has a(n) {}.".format(player.get_name(), potential_equip.get_name(), potential_equip.get_type()))
+                                            sleep(delay)
+                                            print("Old:")
+                                            sleep(delay)
+                                            player.get_equipment()[player.check_equipment_type(new_item[1])].display()
+                                            sleep(delay)
+                                            print("New:")
+                                            sleep(delay)
+                                            potential_equip.display()
+                                            sleep(delay)
+
+                                            while True:
+                                                p_input = input("'Y' to take new equipment, 'N' to keep old equipment.")
+
+                                                if p_input.lower() == 'y':
+                                                    player.add_equipment(potential_equip)
+                                                    print("{} took {}.".format(player.get_name(), player.get_equipment()[-1].get_name()))
+                                                    sleep(delay)
+                                                    player.get_equipment()[-1].display()
+                                                    sleep(delay)
+                                                    break
+
+                                                elif p_input.lower() == 'n':
+                                                    print("{} left {}.".format(player.get_name(), potential_equip.get_name()))
+                                                    sleep(delay)
+                                                    break
+
+                                                else:
+                                                    print("Invalid response: Expected 'Y' or 'N'.")
+                                                    sleep(delay)
 
             del enemies[e]
 
