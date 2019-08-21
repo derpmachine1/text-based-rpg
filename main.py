@@ -51,11 +51,32 @@ def check_deaths():
 
                                         # If player does not already have an equipment item of the same type
                                         if player.check_equipment_type(new_item[1]) == -1:
-                                            player.add_equipment(Equipment(new_item[0], new_item[1], int(new_item[2]), int(new_item[3]), int(new_item[4]), int(new_item[5])))
-                                            print("{} found {}.".format(player.get_name(), player.get_equipment()[-1].get_name()))
+                                            potential_equip = Equipment(new_item[0], new_item[1], int(new_item[2]), int(new_item[3]), int(new_item[4]), int(new_item[5]))
+                                            print("{} found {}.".format(player.get_name(), potential_equip.get_name()))
                                             sleep(delay)
-                                            player.get_equipment()[-1].display()
+                                            potential_equip.display()
                                             sleep(delay)
+
+                                            while True:
+                                                p_input = input("'Y' to take equipment, 'N' to discard equipment.")
+
+                                                if p_input.lower() == 'y':
+                                                    player.add_equipment(potential_equip)
+                                                    print("{} took {}.".format(player.get_name(), player.get_equipment()[-1].get_name()))
+                                                    sleep(delay)
+                                                    player.get_equipment()[-1].display()
+                                                    sleep(delay)
+                                                    break
+
+                                                elif p_input.lower() == 'n':
+                                                    print("{} discarded {}.".format(player.get_name(), potential_equip.get_name()))
+                                                    sleep(delay)
+                                                    break
+
+                                                else:
+                                                    print("Invalid response: Expected 'Y' or 'N'.")
+                                                    sleep(delay)
+
                                         # Else, asks player whether to replace it or not
                                         else:
                                             potential_equip = Equipment(new_item[0], new_item[1], int(new_item[2]), int(new_item[3]), int(new_item[4]), int(new_item[5]))
@@ -75,14 +96,14 @@ def check_deaths():
 
                                                 if p_input.lower() == 'y':
                                                     player.add_equipment(potential_equip)
-                                                    print("{} took {}.".format(player.get_name(), player.get_equipment()[-1].get_name()))
+                                                    print("{} discarded {} and took {}.".format(player.get_name(), player.get_equipment()[player.check_equipment_type(new_item[1])].get_name(), player.get_equipment()[-1].get_name()))
                                                     sleep(delay)
                                                     player.get_equipment()[-1].display()
                                                     sleep(delay)
                                                     break
 
                                                 elif p_input.lower() == 'n':
-                                                    print("{} left {}.".format(player.get_name(), potential_equip.get_name()))
+                                                    print("{} discarded {}.".format(player.get_name(), potential_equip.get_name()))
                                                     sleep(delay)
                                                     break
 
