@@ -190,8 +190,6 @@ while True:
 
     # If no enemies left, create more enemies
     if len(enemies) == 0:
-        encounters += 1
-
         # Spawns boss after 4 encounters
         if encounters == 4:
             new_enemy = enemy_data[0]
@@ -203,6 +201,8 @@ while True:
             enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
             print("Encountered {}.".format(enemies[-1].get_name()))
             sleep(delay)
+
+        encounters += 1
 
     # Iterates through players' actions
     for player in players:
