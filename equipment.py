@@ -35,7 +35,7 @@ class Equipment(Item):
 
     # Displays equipment stats
     def display(self):
-        print("| {:16}   {:>48} |".format(self.name + ':', self.stats_str))
+        print("| {:16}   {:>48} |".format(self.name + ' (' + self.equip_type + ')', self.stats_str))
 
     def get_type(self):
         return self.equip_type
