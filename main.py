@@ -9,11 +9,11 @@ from equipment import Equipment
 # Displays stats of all players and enemies
 def display():
     for player in players:
-        print("")
+        print('')
         player.display()
 
     for e in range(len(enemies)):
-        print("")
+        print('')
         enemies[e].display(e)
 
     sleep(delay)
@@ -22,14 +22,14 @@ def display():
 def check_deaths():
     for p in range(len(players)):
         if players[p].is_dead():
-            print("{} was defeated.".format(players[p].get_name()))
+            print("\n{} was defeated.".format(players[p].get_name()))
             sleep(delay)
 
             del players[p]
 
     for e in range(len(enemies)):
         if enemies[e].is_dead():
-            print("{} was defeated.".format(enemies[e].get_name()))
+            print("\n{} was defeated.".format(enemies[e].get_name()))
             sleep(delay)
 
             for player in players:
@@ -64,8 +64,6 @@ def check_deaths():
                                                     player.add_equipment(potential_equip)
                                                     print("{} took {}.".format(player.get_name(), player.get_equipment()[-1].get_name()))
                                                     sleep(delay)
-                                                    player.get_equipment()[-1].display()
-                                                    sleep(delay)
                                                     break
 
                                                 elif p_input.lower() == 'n':
@@ -98,8 +96,6 @@ def check_deaths():
                                                     player.add_equipment(potential_equip)
                                                     print("{} discarded {} and took {}.".format(player.get_name(), player.get_equipment()[player.check_equipment_type(new_item[1])].get_name(), player.get_equipment()[-1].get_name()))
                                                     sleep(delay)
-                                                    player.get_equipment()[-1].display()
-                                                    sleep(delay)
                                                     break
 
                                                 elif p_input.lower() == 'n':
@@ -129,6 +125,8 @@ players.append(Player("Player1", 1))
 
 
 # Setup for first stage
+print("Entering floor 1.")
+sleep(delay)
 enemy_data = list()
 with open("stage_data/1.txt", 'r') as f_in:
     for enemy in f_in.readlines():
@@ -140,7 +138,7 @@ with open("stage_data/1.txt", 'r') as f_in:
 while True:
     # If finished level (4 normal encounters + boss encounter)
     if encounters == 5:
-        print("Floor {} cleared.".format(stage))
+        print("\nFloor {} cleared.".format(stage))
         sleep(delay)
 
         # Activates endless mode if finished all programmed stages
@@ -194,12 +192,12 @@ while True:
         if encounters == 4:
             new_enemy = enemy_data[0]
             enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
-            print("Encountered floor boss, {}.".format(enemies[-1].get_name()))
+            print("\nEncountered floor boss, {}.".format(enemies[-1].get_name()))
             sleep(delay)
         else:
             new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
             enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
-            print("Encountered {}.".format(enemies[-1].get_name()))
+            print("\nEncountered {}.".format(enemies[-1].get_name()))
             sleep(delay)
 
         encounters += 1
@@ -245,6 +243,7 @@ while True:
                     break
 
             elif p_input.lower() == 'e':
+                print('')
                 while True:
                     if len(player.get_equipment()) == 0:
                         print("{} has no equipment.".format(player.get_name()))
@@ -280,6 +279,7 @@ while True:
                                         else:
                                             print("Invalid response: Expected 'Y' or 'N'.")
                                             sleep(delay)
+                print('')
 
             else:
                 print("Invalid response: Expected 'A' or 'E'.")
@@ -318,4 +318,4 @@ while True:
     
         check_deaths()
 
-print("Game over.")
+print("\nGame over.")
