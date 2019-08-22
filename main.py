@@ -245,15 +245,41 @@ while True:
                     break
 
             elif p_input.lower() == 'e':
-                if len(player.get_equipment()) == 0:
-                    print("{} has no equipment.".format(player.get_name()))
-                    sleep(delay)
-                else:
-                    print("{} has:".format(player.get_name()))
-                    sleep(delay)
-                    for equipment in player.get_equipment():
-                        equipment.display()
+                while True:
+                    if len(player.get_equipment()) == 0:
+                        print("{} has no equipment.".format(player.get_name()))
                         sleep(delay)
+                        break
+                    else:
+                        print("{} has:".format(player.get_name()))
+                        sleep(delay)
+                        for equipment in player.get_equipment():
+                            equipment.display()
+                            sleep(delay)
+
+                        p_input = input("Type name of equipment to interact with, 'E' to stop checking equipment.")
+
+                        if p_input.lower() == 'e':
+                            break
+                        else:
+                            for e in range(len(player.get_equipment())):
+                                if p_input.lower() == player.get_equipment()[e].get_name().lower():
+                                    player.get_equipment()[e].display()
+                                    sleep(delay)
+                                    p_input = input("'Y' to discard equipment, 'N' to keep equipment.")
+
+                                    while True:
+                                        if p_input.lower() == 'y':
+                                            print("{} discarded {}.".format(player.get_name(), player.get_equipment()[e].get_name()))
+                                            sleep(delay)
+                                            player.remove_equipment(e)
+                                            break
+                                        elif p_input.lower() == 'n':
+                                            print("{} kept {}.".format(player.get_name(), player.get_equipment()[e].get_name()))
+                                            break
+                                        else:
+                                            print("Invalid response: Expected 'Y' or 'N'.")
+                                            sleep(delay)
 
             else:
                 print("Invalid response: Expected 'A' or 'E'.")
