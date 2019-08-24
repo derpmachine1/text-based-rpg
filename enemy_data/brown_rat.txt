@@ -1,3 +1,3 @@
 Brown_Rat 10 0 2 0 5
-stick 25
-potion 250
+stick 10
+potion 20
