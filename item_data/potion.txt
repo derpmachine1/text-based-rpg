@@ -1,0 +1,2 @@
+consumable
+Potion 10 0

@@ -30,6 +30,7 @@ class Player(Entity):
         self.lvl = 1
 
         self.equipment = list()
+        self.items = list()
 
     # Updates everything about the player
     def update(self):
@@ -83,6 +84,9 @@ class Player(Entity):
 
     def get_equipment(self):
         return self.equipment
+
+    def get_items(self):
+        return self.items
 
     def change_hp(self, d_hp):
         self.hp_base += d_hp

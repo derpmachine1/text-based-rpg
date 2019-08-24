@@ -212,7 +212,7 @@ while True:
 
         # Gets player's input, keeps trying until input is valid
         while True:
-            p_input = input("'A' to attack, 'E' to check equipment.").strip()
+            p_input = input("'A' to attack, 'E' to check equipment, 'I' to check inventory.").strip()
             
             if p_input.lower() == 'a':
                 # If more than 1 enemy, asks which one to target
@@ -265,24 +265,67 @@ while True:
                                 if p_input.lower() == player.get_equipment()[e].get_name().lower():
                                     player.get_equipment()[e].display()
                                     sleep(delay)
-                                    p_input = input("'Y' to discard equipment, 'N' to keep equipment.")
+                                    p_input = input("'D' to discard equipment, 'K' to keep equipment.")
 
                                     while True:
-                                        if p_input.lower() == 'y':
+                                        if p_input.lower() == 'd':
                                             print("{} discarded {}.".format(player.get_name(), player.get_equipment()[e].get_name()))
                                             sleep(delay)
                                             player.remove_equipment(e)
                                             break
-                                        elif p_input.lower() == 'n':
+                                        elif p_input.lower() == 'k':
                                             print("{} kept {}.".format(player.get_name(), player.get_equipment()[e].get_name()))
                                             break
                                         else:
-                                            print("Invalid response: Expected 'Y' or 'N'.")
+                                            print("Invalid response: Expected 'D' or 'K'.")
+                                            sleep(delay)
+                print('')
+
+            elif p_input.lower() == 'i':
+                print('')
+                while True:
+                    if len(player.get_equipment()) == 0:
+                        print("{} has no items.".format(player.get_name()))
+                        sleep(delay)
+                        break
+                    else:
+                        print("{} has:".format(player.get_name()))
+                        sleep(delay)
+                        for item in player.get_items():
+                            item.display()
+                            sleep(delay)
+
+                        p_input = input("Type name of item to interact with, 'I' to stop checking inventory.")
+
+                        if p_input.lower() == 'i':
+                            break
+                        else:
+                            for i in range(len(player.get_items())):
+                                if p_input.lower() == player.get_items()[i].get_name().lower():
+                                    player.get_items()[i].display()
+                                    sleep(delay)
+                                    p_input = input("'U' to use item, 'D' to discard item, 'K' to keep item.")
+
+                                    while True:
+                                        if p_input.lower() == 'u':
+                                            print("{} used {}.".format(player.get_name(), player.get_items()[i].get_name()))
+                                            sleep(delay)
+                                            break
+                                        if p_input.lower() == 'd':
+                                            print("{} discarded {}.".format(player.get_name(), player.get_items()[i].get_name()))
+                                            sleep(delay)
+                                            player.remove_equipment(i)
+                                            break
+                                        elif p_input.lower() == 'k':
+                                            print("{} kept {}.".format(player.get_name(), player.get_items()[i].get_name()))
+                                            break
+                                        else:
+                                            print("Invalid response: Expected 'U', 'D', or 'K'.")
                                             sleep(delay)
                 print('')
 
             else:
-                print("Invalid response: Expected 'A' or 'E'.")
+                print("Invalid response: Expected 'A', 'E', or 'I'.")
                 sleep(delay)
 
         check_deaths()
