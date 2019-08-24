@@ -29,8 +29,8 @@ class Player(Entity):
         self.exp_req = 0
         self.lvl = 1
 
-        self.equipment = list()
-        self.items = list()
+        self.equipment = list()  # Stores equipment
+        self.items = list()  # Stores all other items
 
     # Updates everything about the player
     def update(self):
@@ -118,3 +118,9 @@ class Player(Entity):
                 return e
 
         return -1
+
+    def add_item(self, item):
+        self.items.append(item)
+
+    def remove_item(self, i):
+        del self.items[i]

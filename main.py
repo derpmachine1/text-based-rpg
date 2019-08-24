@@ -4,6 +4,7 @@ from os import listdir
 from player import Player
 from enemy import Enemy
 from equipment import Equipment
+from consumable import Consumable
 
 
 # Displays stats of all players and enemies
@@ -45,8 +46,10 @@ def check_deaths():
                         for item_drop in enemy[1:]:
                             if randint(1, 100) <= int(item_drop.split()[1]):
                                 with open("item_data/{}.txt".format(item_drop.split()[0])) as f_in2:
+                                    item_type = f_in2.readline().strip()
+
                                     # For equipment items
-                                    if f_in2.readline().strip() == "equipment":
+                                    if item_type == "equipment":
                                         new_item = f_in2.readline().split()
 
                                         # If player does not already have an equipment item of the same type
@@ -58,21 +61,21 @@ def check_deaths():
                                             sleep(delay)
 
                                             while True:
-                                                p_input = input("'Y' to take equipment, 'N' to discard equipment.")
+                                                p_input = input("'T' to take equipment, 'D' to discard equipment.")
 
-                                                if p_input.lower() == 'y':
+                                                if p_input.lower() == 't':
                                                     player.add_equipment(potential_equip)
                                                     print("{} took {}.".format(player.get_name(), player.get_equipment()[-1].get_name()))
                                                     sleep(delay)
                                                     break
 
-                                                elif p_input.lower() == 'n':
+                                                elif p_input.lower() == 'd':
                                                     print("{} discarded {}.".format(player.get_name(), potential_equip.get_name()))
                                                     sleep(delay)
                                                     break
 
                                                 else:
-                                                    print("Invalid response: Expected 'Y' or 'N'.")
+                                                    print("Invalid response: Expected 'T' or 'D'.")
                                                     sleep(delay)
 
                                         # Else, asks player whether to replace it or not
@@ -90,22 +93,50 @@ def check_deaths():
                                             sleep(delay)
 
                                             while True:
-                                                p_input = input("'Y' to take new equipment, 'N' to keep old equipment.")
+                                                p_input = input("'t' to take new equipment, 'k' to keep old equipment.")
 
-                                                if p_input.lower() == 'y':
+                                                if p_input.lower() == 't':
                                                     player.add_equipment(potential_equip)
                                                     print("{} discarded {} and took {}.".format(player.get_name(), player.get_equipment()[player.check_equipment_type(new_item[1])].get_name(), player.get_equipment()[-1].get_name()))
                                                     sleep(delay)
                                                     break
 
-                                                elif p_input.lower() == 'n':
-                                                    print("{} discarded {}.".format(player.get_name(), potential_equip.get_name()))
+                                                elif p_input.lower() == 'k':
+                                                    print("{} discarded {} and kept {}.".format(player.get_name(), potential_equip.get_name(), player.get_equipment()[player.check_equipment_type(new_item[1])].get_name()))
                                                     sleep(delay)
                                                     break
 
                                                 else:
-                                                    print("Invalid response: Expected 'Y' or 'N'.")
+                                                    print("Invalid response: Expected 'T' or 'K'.")
                                                     sleep(delay)
+
+                                    # For consumable items
+                                    elif item_type == "consumable":
+                                        new_item = f_in2.readline().split()
+
+                                        potential_item = Consumable(new_item[0], int(new_item[1]), int(new_item[2]))
+                                        print("{} found {}.".format(player.get_name(), potential_item.get_name()))
+                                        sleep(delay)
+                                        potential_item.display()
+                                        sleep(delay)
+
+                                        while True:
+                                            p_input = input("'T' to take item, 'D' to discard item.")
+
+                                            if p_input.lower() == 't':
+                                                player.add_item(potential_item)
+                                                print("{} took {}.".format(player.get_name(), player.get_items()[-1].get_name()))
+                                                sleep(delay)
+                                                break
+
+                                            elif p_input.lower() == 'd':
+                                                print("{} discarded {}.".format(player.get_name(), potential_item.get_name()))
+                                                sleep(delay)
+                                                break
+
+                                            else:
+                                                print("Invalid response: Expected 'T' or 'D'.")
+                                                sleep(delay)
 
             del enemies[e]
 
