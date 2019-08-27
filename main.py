@@ -167,64 +167,66 @@ with open("stage_data/1.txt", 'r') as f_in:
                 enemy_data.append(new_enemy)
 
 while True:
-    # If finished level (4 normal encounters + boss encounter)
-    if encounters == 5:
-        print("\nFloor {} cleared.".format(stage))
-        sleep(delay)
-
-        # Activates endless mode if finished all programmed stages
-        if stage == total_stages or stage == 0:
-            stage = 0
-            encounters = 0
-
-            print("Entering endless floor.")
-            sleep(delay)
-
-            # Randomly generates enemies scaled to level
-            average_lvl = sum([player.get_lvl() for player in players]) // len(players)
-            enemy_data = list()
-            enemy_data.append(["Boss",
-                               average_lvl * 10 + randint(30, 50),
-                               average_lvl * 10 + randint(30, 50),
-                               average_lvl * 1 + randint(8, 12),
-                               average_lvl * 1 + randint(4, 6),
-                               average_lvl * 2])
-            for i in range(10):
-                enemy_data.append(["Enemy",
-                                   average_lvl * 5 + randint(15, 25),
-                                   average_lvl * 5 + randint(15, 25),
-                                   average_lvl * 1 + randint(4, 6),
-                                   average_lvl * 1 + randint(2, 3),
-                                   average_lvl])
-
-        else:
-            stage += 1
-            encounters = 0
-
-            print("Entering floor {}.".format(stage))
-            sleep(delay)
-
-            # Reads and stores enemy data for new level
-            enemy_data = list()
-            with open("stage_data/{}.txt".format(stage), 'r') as f_in:
-                for enemy in f_in.readlines():
-                    with open("enemy_data/{}.txt".format(enemy.split()[0])) as f_in2:
-                        new_enemy = f_in2.readline().split()
-                        for i in range(int(enemy.split()[1])):
-                            enemy_data.append(new_enemy)
-
     # If no players left, lose
     if len(players) == 0:
         break
 
-    # If no enemies left, create more enemies
+    # If no enemies left
     if len(enemies) == 0:
+        # If finished level (4 normal encounters + boss encounter)
+        if encounters == 5:
+            print("\nFloor {} cleared.".format(stage))
+            sleep(delay)
+
+            # Activates endless mode if finished all programmed stages
+            if stage == total_stages or stage == 0:
+                stage = 0
+                encounters = 0
+
+                print("Entering endless floor.")
+                sleep(delay)
+
+                # Randomly generates enemies scaled to level
+                average_lvl = sum([player.get_lvl() for player in players]) // len(players)
+                enemy_data = list()
+                enemy_data.append(["Boss",
+                                   average_lvl * 10 + randint(30, 50),
+                                   average_lvl * 10 + randint(30, 50),
+                                   average_lvl * 1 + randint(8, 12),
+                                   average_lvl * 1 + randint(4, 6),
+                                   average_lvl * 2])
+                for i in range(10):
+                    enemy_data.append(["Enemy",
+                                       average_lvl * 5 + randint(15, 25),
+                                       average_lvl * 5 + randint(15, 25),
+                                       average_lvl * 1 + randint(4, 6),
+                                       average_lvl * 1 + randint(2, 3),
+                                       average_lvl])
+
+            else:
+                stage += 1
+                encounters = 0
+
+                print("Entering floor {}.".format(stage))
+                sleep(delay)
+
+                # Reads and stores enemy data for new level
+                enemy_data = list()
+                with open("stage_data/{}.txt".format(stage), 'r') as f_in:
+                    for enemy in f_in.readlines():
+                        with open("enemy_data/{}.txt".format(enemy.split()[0])) as f_in2:
+                            new_enemy = f_in2.readline().split()
+                            for i in range(int(enemy.split()[1])):
+                                enemy_data.append(new_enemy)
+
         # Spawns boss after 4 encounters
-        if encounters == 4:
+        elif encounters == 4:
             new_enemy = enemy_data[0]
             enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
             print("\nEncountered floor boss, {}.".format(enemies[-1].get_name()))
             sleep(delay)
+
+        # Spawns normal enemy
         else:
             new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
             enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
