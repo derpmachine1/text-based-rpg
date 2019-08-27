@@ -144,7 +144,7 @@ def check_deaths():
 
 delay = 0.5  # Time delay between text
 
-total_stages = len(listdir('enemy_data'))  # Total number of stages built into the game
+total_stages = len(listdir('stage_data'))  # Total number of stages built into the game
 stage = 1  # Stage of the game
 encounters = 0  # Number of enemy encounters in current level thus far
 enemy_data = list()  # Stores data of all possible enemies on current level
