@@ -30,3 +30,7 @@ class Consumable(Item):
 
     def get_d_mp(self):
         return self.d_mp
+
+    def use(self, player):
+        player.change_hp(self.d_hp)
+        player.change_mp(self.d_mp)

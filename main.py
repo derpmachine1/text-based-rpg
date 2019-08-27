@@ -93,7 +93,7 @@ def check_deaths():
                                             sleep(delay)
 
                                             while True:
-                                                p_input = input("'t' to take new equipment, 'k' to keep old equipment.")
+                                                p_input = input("'T' to take new equipment, 'K' to keep old equipment.")
 
                                                 if p_input.lower() == 't':
                                                     player.add_equipment(potential_equip)
@@ -315,7 +315,7 @@ while True:
             elif p_input.lower() == 'i':
                 print('')
                 while True:
-                    if len(player.get_equipment()) == 0:
+                    if len(player.get_items()) == 0:
                         print("{} has no items.".format(player.get_name()))
                         sleep(delay)
                         break
@@ -341,6 +341,7 @@ while True:
                                         if p_input.lower() == 'u':
                                             print("{} used {}.".format(player.get_name(), player.get_items()[i].get_name()))
                                             sleep(delay)
+                                            player.use_item(i)
                                             break
                                         if p_input.lower() == 'd':
                                             print("{} discarded {}.".format(player.get_name(), player.get_items()[i].get_name()))

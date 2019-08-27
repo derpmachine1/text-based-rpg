@@ -124,3 +124,7 @@ class Player(Entity):
 
     def remove_item(self, i):
         del self.items[i]
+
+    def use_item(self, i):
+        self.items[i].use(self)
+        self.remove_item(i)
