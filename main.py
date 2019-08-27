@@ -36,9 +36,12 @@ def check_deaths():
             for player in players:
                 # Experience gain
                 player.change_exp(enemies[e].get_exp())
-                print("{} gained {} experience.".format(player.get_name(), enemies[e].get_exp()))
+                print("{} gained {} EXP.".format(player.get_name(), enemies[e].get_exp()))
                 sleep(delay)
-                player.calculate_lvl()
+                if player.check_lvl():
+                    print("{} leveled up to level {}.".format(player.get_name(), player.get_lvl() + 1))
+                    sleep(delay)
+                    player.lvl_up()
 
                 # Rolls for items
                 with open("enemy_data/{}.txt".format(enemies[e].get_name().replace(' ', '_'))) as f_in:
@@ -271,7 +274,7 @@ while True:
                 # If just 1 enemy, automatically targets it
                 else:
                     player.attack_entity(enemies[0])
-                    print("{} attacked {} for {} damage.".format(player.get_name(), enemies[0].get_name(), player.attack_entity_damage(enemies[0])))
+                    print("{} attacked {} for {} HP.".format(player.get_name(), enemies[0].get_name(), player.attack_entity_damage(enemies[0])))
                     sleep(delay)
                     break
 
@@ -346,6 +349,7 @@ while True:
                                             print("{} used {}.".format(player.get_name(), player.get_items()[i].get_name()))
                                             sleep(delay)
                                             player.use_item_display(i)
+                                            sleep(delay)
                                             player.use_item(i)
                                             break
                                         elif p_input.lower() == 'd':

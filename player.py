@@ -30,6 +30,12 @@ class Player(Entity):
         self.equipment = list()  # Stores equipment
         self.items = list()  # Stores all other items
 
+    # Displays player stats
+    def display(self):
+        print("| {:32} | {:8}{:>24} |".format(self.name, "LVL " + str(self.lvl) + ":", str(self.exp) + "/" + str(self.exp_req)))
+        print("| {:8}{:>24} | {:8}{:>24} |".format("HP:", str(self.hp) + "/" + str(self.hp_max), "MP:", str(self.mp) + "/" + str(self.mp_max)))
+        print("| {:8}{:>24} | {:8}{:>24} |".format("ATT:", str(self.attack), "DEF:", str(self.defense)))
+
     # Adds modifiers from equipment to base stats
     # Needs to be called when base stats change or when equipment changes
     def calculate_final_stats(self):
@@ -44,31 +50,32 @@ class Player(Entity):
             self.attack += equipment.get_d_attack()
             self.defense += equipment.get_d_defense()
 
-    # Calculates exp required to next level and handles level ups
-    def calculate_lvl(self):
+    def check_lvl(self):
         self.exp_req = self.lvl * 10
 
         if self.exp >= self.exp_req:
-            self.lvl += 1
-            self.exp -= self.exp_req
+            return True
+        else:
+            return False
 
-            # Increases base stats
-            x = randint(4, 8)
-            self.hp_max_base += x
-            self.hp += x
-            x = randint(4, 8)
-            self.mp_max_base += x
-            self.mp += x
-            self.attack_base += randint(1, 2)
+    def lvl_up(self):
+        self.exp_req = self.lvl * 10
 
-            self.exp_req = self.lvl * 10
-            self.calculate_final_stats()
+        self.lvl += 1
+        self.exp -= self.exp_req
+        self.exp = max(0, self.exp)
 
-    # Displays player stats
-    def display(self):
-        print("| {:32} | {:8}{:>24} |".format(self.name, "LVL " + str(self.lvl) + ":", str(self.exp) + "/" + str(self.exp_req)))
-        print("| {:8}{:>24} | {:8}{:>24} |".format("HP:", str(self.hp) + "/" + str(self.hp_max), "MP:", str(self.mp) + "/" + str(self.mp_max)))
-        print("| {:8}{:>24} | {:8}{:>24} |".format("ATT:", str(self.attack), "DEF:", str(self.defense)))
+        # Increases base stats
+        d_hp = randint(4, 8)
+        self.hp_max_base += d_hp
+        self.hp += d_hp
+        d_mp = randint(4, 8)
+        self.mp_max_base += d_mp
+        self.mp += d_mp
+        d_attack = randint(1, 2)
+        self.attack_base += d_attack
+
+        self.calculate_final_stats()
 
     def get_lvl(self):
         return self.lvl
