@@ -20,6 +20,7 @@ class Consumable(Item):
             self.stats_str += "[+{} MP] ".format(self.d_mp)
         elif self.d_mp > 0:
             self.stats_str += "[-{} MP] ".format(-self.d_mp)
+        self.stats_str = self.stats_str.rstrip(' ')
 
     # Displays consumable stats
     def display(self):
@@ -30,3 +31,7 @@ class Consumable(Item):
 
     def get_d_mp(self):
         return self.d_mp
+
+    def use(self, player):
+        player.change_hp(self.d_hp)
+        player.change_mp(self.d_mp)
