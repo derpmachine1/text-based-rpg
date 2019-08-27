@@ -258,7 +258,7 @@ while True:
                         try:
                             p_input = int(p_input) - 1  # Calculates actual index by subtracting location by 1
                             player.attack_entity(enemies[p_input])
-                            print("{} attacked {} for {} damage.".format(player.get_name(), enemies[p_input].get_name(), player.attack_entity_damage(enemies[p_input])))
+                            print("{} attacked {} for {} HP.".format(player.get_name(), enemies[p_input].get_name(), player.attack_entity_damage(enemies[p_input])))
                             sleep(delay)
                             break
                         except ValueError:
@@ -312,6 +312,8 @@ while True:
                                         else:
                                             print("Invalid response: Expected 'D' or 'K'.")
                                             sleep(delay)
+
+                                    break
                 print('')
 
             elif p_input.lower() == 'i':
@@ -343,12 +345,13 @@ while True:
                                         if p_input.lower() == 'u':
                                             print("{} used {}.".format(player.get_name(), player.get_items()[i].get_name()))
                                             sleep(delay)
+                                            player.use_item_display(i)
                                             player.use_item(i)
                                             break
-                                        if p_input.lower() == 'd':
+                                        elif p_input.lower() == 'd':
                                             print("{} discarded {}.".format(player.get_name(), player.get_items()[i].get_name()))
                                             sleep(delay)
-                                            player.remove_equipment(i)
+                                            player.remove_item(i)
                                             break
                                         elif p_input.lower() == 'k':
                                             print("{} kept {}.".format(player.get_name(), player.get_items()[i].get_name()))
@@ -356,6 +359,8 @@ while True:
                                         else:
                                             print("Invalid response: Expected 'U', 'D', or 'K'.")
                                             sleep(delay)
+
+                                    break
                 print('')
 
             else:
@@ -385,12 +390,12 @@ while True:
                     target_hp = players[p].get_hp() - enemy.attack_entity_damage(players[p])
             
             enemy.attack_entity(players[target])
-            print("Attacked {} for {} damage.".format(players[target].get_name(), enemy.attack_entity_damage(players[target])))
+            print("Attacked {} for {} HP.".format(players[target].get_name(), enemy.attack_entity_damage(players[target])))
             sleep(delay)
         # If just 1 player, automatically targets it
         else:
             enemy.attack_entity(players[0])
-            print("Attacked {} for {} damage.".format(players[0].get_name(), enemy.attack_entity_damage(players[0])))
+            print("Attacked {} for {} HP.".format(players[0].get_name(), enemy.attack_entity_damage(players[0])))
             sleep(delay)
     
         check_deaths()

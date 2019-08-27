@@ -120,3 +120,18 @@ class Player(Entity):
         self.items[i].use(self)
         self.remove_item(i)
         self.calculate_final_stats()
+
+    # Displays effect of using consumable on player without using it
+    def use_item_display(self, i):
+        display_str = str()
+        if self.items[i].get_d_hp() > 0:
+            display_str += "{} gained {} HP. ".format(self.name, self.items[i].get_d_hp())
+        elif self.items[i].get_d_hp() < 0:
+            display_str += "{} lost {} HP. ".format(self.name, -self.items[i].get_d_hp())
+        if self.items[i].get_d_mp() > 0:
+            display_str += "{} gained {} MP. ".format(self.name, self.items[i].get_d_mp())
+        elif self.items[i].get_d_mp() < 0:
+            display_str += "{} lost {} MP. ".format(self.name, -self.items[i].get_d_mp())
+            display_str = display_str.rstrip(' ')
+
+        print(display_str)

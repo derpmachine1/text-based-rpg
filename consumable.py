@@ -20,6 +20,7 @@ class Consumable(Item):
             self.stats_str += "[+{} MP] ".format(self.d_mp)
         elif self.d_mp > 0:
             self.stats_str += "[-{} MP] ".format(-self.d_mp)
+        self.stats_str = self.stats_str.rstrip(' ')
 
     # Displays consumable stats
     def display(self):

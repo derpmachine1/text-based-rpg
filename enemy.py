@@ -22,8 +22,5 @@ class Enemy(Entity):
         print("| {:8}{:>24} | {:8}{:>24} |".format("HP:", str(self.hp) + "/" + str(self.hp_max), "MP:", str(self.mp) + "/" + str(self.mp_max)))
         print("| {:8}{:>24} | {:8}{:>24} |".format("ATT:", str(self.attack), "DEF:", str(self.defense)))
 
-    def get_weight(self):
-        return self.weight
-
     def get_exp(self):
         return self.exp
