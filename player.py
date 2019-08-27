@@ -12,16 +12,14 @@ class Player(Entity):
         # Variables to store base stats
         self.hp_max_base = int(round(20 / self.difficulty))
         self.mp_max_base = int(round(20 / self.difficulty))
-        self.hp_base = self.hp_max_base
-        self.mp_base = self.mp_max_base
         self.attack_base = int(round(5 / self.difficulty))
         self.defense_base = 0
 
         # Variables to store final stats; will be used in the future for equipment, status effects, etc
         self.hp_max = self.hp_max_base
         self.mp_max = self.mp_max_base
-        self.hp = self.hp_base
-        self.mp = self.mp_base
+        self.hp = self.hp_max
+        self.mp = self.mp_max
         self.attack = self.attack_base
         self.defense = self.defense_base
 
@@ -32,25 +30,17 @@ class Player(Entity):
         self.equipment = list()  # Stores equipment
         self.items = list()  # Stores all other items
 
-    # Updates everything about the player
-    def update(self):
-        self.calculate_lvl()
-        self.calculate_final_stats()
-
-    # Adds modifiers to base stats
+    # Adds modifiers from equipment to base stats
+    # Needs to be called when base stats change or when equipment changes
     def calculate_final_stats(self):
         self.hp_max = self.hp_max_base
         self.mp_max = self.mp_max_base
-        self.hp = self.hp_base
-        self.mp = self.mp_base
         self.attack = self.attack_base
         self.defense = self.defense_base
 
         for equipment in self.equipment:
             self.hp_max += equipment.get_d_hp()
             self.mp_max += equipment.get_d_mp()
-            self.hp += equipment.get_d_hp()
-            self.mp += equipment.get_d_mp()
             self.attack += equipment.get_d_attack()
             self.defense += equipment.get_d_defense()
 
@@ -65,13 +55,14 @@ class Player(Entity):
             # Increases base stats
             x = randint(4, 8)
             self.hp_max_base += x
-            self.hp_base += x
+            self.hp += x
             x = randint(4, 8)
             self.mp_max_base += x
-            self.mp_base += x
+            self.mp += x
             self.attack_base += randint(1, 2)
 
             self.exp_req = self.lvl * 10
+            self.calculate_final_stats()
 
     # Displays player stats
     def display(self):
@@ -89,11 +80,9 @@ class Player(Entity):
         return self.items
 
     def change_hp(self, d_hp):
-        self.hp_base += d_hp
         self.hp += d_hp
 
     def change_mp(self, d_mp):
-        self.mp_base = d_mp
         self.mp += d_mp
 
     def change_exp(self, d_exp):
@@ -106,9 +95,11 @@ class Player(Entity):
                 del self.equipment[e]
 
         self.equipment.append(equipment)
+        self.calculate_final_stats()
 
     def remove_equipment(self, e):
         del self.equipment[e]
+        self.calculate_final_stats()
 
     # Checks if player already has equipment of a certain type; returns index of duplicate or -1
     def check_equipment_type(self, equip_type):
@@ -128,3 +119,4 @@ class Player(Entity):
     def use_item(self, i):
         self.items[i].use(self)
         self.remove_item(i)
+        self.calculate_final_stats()

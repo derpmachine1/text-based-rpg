@@ -38,6 +38,7 @@ def check_deaths():
                 player.change_exp(enemies[e].get_exp())
                 print("{} gained {} experience.".format(player.get_name(), enemies[e].get_exp()))
                 sleep(delay)
+                player.calculate_lvl()
 
                 # Rolls for items
                 with open("enemy_data/{}.txt".format(enemies[e].get_name().replace(' ', '_'))) as f_in:
@@ -237,7 +238,6 @@ while True:
 
     # Iterates through players' actions
     for player in players:
-        player.update()
         display()
 
         print("\n{}'s turn.".format(player.get_name()))
