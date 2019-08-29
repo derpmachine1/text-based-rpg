@@ -141,10 +141,11 @@ delay = 0.5  # Time delay between text
 total_stages = len(listdir('stage_data'))  # Total number of stages built into the game
 stage = 1  # Stage of the game
 encounters = 0  # Number of enemy encounters in current level thus far
-enemy_data = list()  # Stores data of all possible enemies on current level
 
 players = list()
 enemies = list()
+
+enemy_data = list()  # Stores data of all possible enemies on current level
 
 # Start of the game
 print("Text Based RPG: A Text Based RPG")
@@ -168,6 +169,8 @@ while True:
             print("Invalid response: Must have at least 1 player.")
             sleep(delay)        
 
+starting_players = len(players)
+            
 # Setup for first stage
 print("Entering floor 1.")
 sleep(delay)
@@ -239,12 +242,14 @@ while True:
             print("\nEncountered floor boss, {}.".format(enemies[-1].get_name()))
             sleep(delay)
 
-        # Spawns normal enemy
+        # Spawns normal enemy/enemies; spawns same amount as starting number of players
         else:
-            new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
-            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
-            print("\nEncountered {}.".format(enemies[-1].get_name()))
-            sleep(delay)
+            print('')
+            for i in range(starting_players):
+                new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
+                enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
+                print("Encountered {}.".format(enemies[-1].get_name()))
+                sleep(delay)
 
         encounters += 1
 
