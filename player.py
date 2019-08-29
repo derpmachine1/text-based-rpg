@@ -75,6 +75,8 @@ class Player(Entity):
         d_attack = randint(1, 2)
         self.attack_base += d_attack
 
+        self.exp_req = self.lvl * 10
+
         self.calculate_final_stats()
 
     def get_lvl(self):
