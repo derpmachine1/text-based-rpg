@@ -154,17 +154,18 @@ input("Enter anything to start.")
 while True:
     p_input = input("Enter number of players.")
     try:
-        int(p_input)
+        p_input = int(p_input)
     except ValueError:
         print("Invalid response: Expected whole number.")
         sleep(delay)
     else:
         if p_input >= 1:
-            for i in range(int(p_input)):
+            for i in range(p_input):
                 p_input = input("Enter name of player {}.".format(i + 1))
                 players.append(Player(p_input, 1))
                 print("Player {} created.".format(p_input))
                 sleep(delay)
+            break
         else:
             print("Invalid response: Must have at least 1 player.")
             sleep(delay)        
@@ -172,7 +173,7 @@ while True:
 starting_players = len(players)
             
 # Setup for first stage
-print("Entering floor 1.")
+print("\nEntering floor 1.")
 sleep(delay)
 enemy_data = list()
 with open("stage_data/1.txt", 'r') as f_in:
