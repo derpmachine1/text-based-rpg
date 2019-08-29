@@ -66,18 +66,15 @@ def check_deaths():
 
                                             while True:
                                                 p_input = input("'T' to take equipment, 'D' to discard equipment.")
-
                                                 if p_input.lower() == 't':
                                                     player.add_equipment(potential_equip)
                                                     print("{} took {}.".format(player.get_name(), player.get_equipment()[-1].get_name()))
                                                     sleep(delay)
                                                     break
-
                                                 elif p_input.lower() == 'd':
                                                     print("{} discarded {}.".format(player.get_name(), potential_equip.get_name()))
                                                     sleep(delay)
                                                     break
-
                                                 else:
                                                     print("Invalid response: Expected 'T' or 'D'.")
                                                     sleep(delay)
@@ -98,18 +95,15 @@ def check_deaths():
 
                                             while True:
                                                 p_input = input("'T' to take new equipment, 'K' to keep old equipment.")
-
                                                 if p_input.lower() == 't':
                                                     player.add_equipment(potential_equip)
                                                     print("{} discarded {} and took {}.".format(player.get_name(), player.get_equipment()[player.check_equipment_type(new_item[1])].get_name(), player.get_equipment()[-1].get_name()))
                                                     sleep(delay)
                                                     break
-
                                                 elif p_input.lower() == 'k':
                                                     print("{} discarded {} and kept {}.".format(player.get_name(), potential_equip.get_name(), player.get_equipment()[player.check_equipment_type(new_item[1])].get_name()))
                                                     sleep(delay)
                                                     break
-
                                                 else:
                                                     print("Invalid response: Expected 'T' or 'K'.")
                                                     sleep(delay)
@@ -126,18 +120,15 @@ def check_deaths():
 
                                         while True:
                                             p_input = input("'T' to take item, 'D' to discard item.")
-
                                             if p_input.lower() == 't':
                                                 player.add_item(potential_item)
                                                 print("{} took {}.".format(player.get_name(), player.get_items()[-1].get_name()))
                                                 sleep(delay)
                                                 break
-
                                             elif p_input.lower() == 'd':
                                                 print("{} discarded {}.".format(player.get_name(), potential_item.get_name()))
                                                 sleep(delay)
                                                 break
-
                                             else:
                                                 print("Invalid response: Expected 'T' or 'D'.")
                                                 sleep(delay)
@@ -150,15 +141,36 @@ delay = 0.5  # Time delay between text
 total_stages = len(listdir('stage_data'))  # Total number of stages built into the game
 stage = 1  # Stage of the game
 encounters = 0  # Number of enemy encounters in current level thus far
-enemy_data = list()  # Stores data of all possible enemies on current level
 
 players = list()
 enemies = list()
 
-players.append(Player("Player1", 1))
-# players.append(Player("Player2", 1))
+enemy_data = list()  # Stores data of all possible enemies on current level
 
+# Start of the game
+print("Text Based RPG: A Text Based RPG")
+sleep(delay)
+input("Enter anything to start.")
+while True:
+    p_input = input("Enter number of players.")
+    try:
+        int(p_input)
+    except ValueError:
+        print("Invalid response: Expected whole number.")
+        sleep(delay)
+    else:
+        if p_input >= 1:
+            for i in range(int(p_input)):
+                p_input = input("Enter name of player {}.".format(i + 1))
+                players.append(Player(p_input, 1))
+                print("Player {} created.".format(p_input))
+                sleep(delay)
+        else:
+            print("Invalid response: Must have at least 1 player.")
+            sleep(delay)        
 
+starting_players = len(players)
+            
 # Setup for first stage
 print("Entering floor 1.")
 sleep(delay)
@@ -230,12 +242,14 @@ while True:
             print("\nEncountered floor boss, {}.".format(enemies[-1].get_name()))
             sleep(delay)
 
-        # Spawns normal enemy
+        # Spawns normal enemy/enemies; spawns same amount as starting number of players
         else:
-            new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
-            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
-            print("\nEncountered {}.".format(enemies[-1].get_name()))
-            sleep(delay)
+            print('')
+            for i in range(starting_players):
+                new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
+                enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
+                print("Encountered {}.".format(enemies[-1].get_name()))
+                sleep(delay)
 
         encounters += 1
 
@@ -249,15 +263,12 @@ while True:
         # Gets player's input, keeps trying until input is valid
         while True:
             p_input = input("'A' to attack, 'E' to check equipment, 'I' to check inventory.").strip()
-            
             if p_input.lower() == 'a':
                 # If more than 1 enemy, asks which one to target
                 if len(enemies) > 1:
                     # Gets player's input, keeps trying until input is valid
                     while True:
-                        p_input = input("Type location of enemy to target.").strip()
-                        sleep(delay)
-                        
+                        p_input = input("Enter location of enemy to target.").strip()
                         try:
                             p_input = int(p_input) - 1  # Calculates actual index by subtracting location by 1
                             player.attack_entity(enemies[p_input])
@@ -292,8 +303,7 @@ while True:
                             equipment.display()
                             sleep(delay)
 
-                        p_input = input("Type name of equipment to interact with, 'E' to stop checking equipment.")
-
+                        p_input = input("Enter name of equipment to interact with, 'E' to stop checking equipment.")
                         if p_input.lower() == 'e':
                             break
                         else:
@@ -301,8 +311,8 @@ while True:
                                 if p_input.lower() == player.get_equipment()[e].get_name().lower():
                                     player.get_equipment()[e].display()
                                     sleep(delay)
+                                    
                                     p_input = input("'D' to discard equipment, 'K' to keep equipment.")
-
                                     while True:
                                         if p_input.lower() == 'd':
                                             print("{} discarded {}.".format(player.get_name(), player.get_equipment()[e].get_name()))
@@ -334,7 +344,6 @@ while True:
                             sleep(delay)
 
                         p_input = input("Type name of item to interact with, 'I' to stop checking inventory.")
-
                         if p_input.lower() == 'i':
                             break
                         else:
@@ -342,8 +351,8 @@ while True:
                                 if p_input.lower() == player.get_items()[i].get_name().lower():
                                     player.get_items()[i].display()
                                     sleep(delay)
+                                    
                                     p_input = input("'U' to use item, 'D' to discard item, 'K' to keep item.")
-
                                     while True:
                                         if p_input.lower() == 'u':
                                             print("{} used {}.".format(player.get_name(), player.get_items()[i].get_name()))
