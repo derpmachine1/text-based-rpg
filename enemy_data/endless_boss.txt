@@ -1,0 +1,2 @@
+Endless_Boss 0 0 0 0 0
+hp_potion 50

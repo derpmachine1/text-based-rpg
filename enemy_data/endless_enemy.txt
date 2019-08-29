@@ -1,0 +1,2 @@
+Endless_Enemy 0 0 0 0 0
+hp_potion 25

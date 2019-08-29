@@ -200,31 +200,31 @@ while True:
                 stage = 0
                 encounters = 0
 
-                print("Entering endless floor.")
+                print("\nEntering endless floor.")
                 sleep(delay)
 
                 # Randomly generates enemies scaled to level
                 average_lvl = sum([player.get_lvl() for player in players]) // len(players)
                 enemy_data = list()
                 enemy_data.append(["Endless Boss",
-                                   average_lvl * 10 + randint(30, 50),
-                                   average_lvl * 10 + randint(30, 50),
-                                   average_lvl * 1 + randint(8, 12),
-                                   average_lvl * 1 + randint(4, 6),
-                                   average_lvl * 2])
+                                   average_lvl * 16 + randint(-8, 8),
+                                   average_lvl * 16 + randint(-8, 8),
+                                   average_lvl * 4 + randint(-2, 2),
+                                   average_lvl * 4 + randint(-2, 2),
+                                   average_lvl * 4])
                 for i in range(10):
                     enemy_data.append(["Endless Enemy",
-                                       average_lvl * 5 + randint(15, 25),
-                                       average_lvl * 5 + randint(15, 25),
-                                       average_lvl * 1 + randint(4, 6),
-                                       average_lvl * 1 + randint(2, 3),
-                                       average_lvl])
+                                       average_lvl * 8 + randint(-4, 4),
+                                       average_lvl * 8 + randint(-4, 4),
+                                       average_lvl * 2 + randint(-1, 1),
+                                       average_lvl * 2 + randint(-1, 1),
+                                       average_lvl * 2])
 
             else:
                 stage += 1
                 encounters = 0
 
-                print("Entering floor {}.".format(stage))
+                print("\nEntering floor {}.".format(stage))
                 sleep(delay)
 
                 # Reads and stores enemy data for new level
