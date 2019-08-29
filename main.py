@@ -58,7 +58,7 @@ def check_deaths():
 
                                         # If player does not already have an equipment item of the same type
                                         if player.check_equipment_type(new_item[1]) == -1:
-                                            potential_equip = Equipment(new_item[0], new_item[1], int(new_item[2]), int(new_item[3]), int(new_item[4]), int(new_item[5]))
+                                            potential_equip = Equipment(new_item[0].replace('_', ' '), new_item[1], int(new_item[2]), int(new_item[3]), int(new_item[4]), int(new_item[5]))
                                             print("{} found {}.".format(player.get_name(), potential_equip.get_name()))
                                             sleep(delay)
                                             potential_equip.display()
@@ -81,7 +81,7 @@ def check_deaths():
 
                                         # Else, asks player whether to replace it or not
                                         else:
-                                            potential_equip = Equipment(new_item[0], new_item[1], int(new_item[2]), int(new_item[3]), int(new_item[4]), int(new_item[5]))
+                                            potential_equip = Equipment(new_item[0].replace('_', ' '), new_item[1], int(new_item[2]), int(new_item[3]), int(new_item[4]), int(new_item[5]))
                                             print("{} found {} but already has a(n) {}.".format(player.get_name(), potential_equip.get_name(), potential_equip.get_type()))
                                             sleep(delay)
                                             print("Old:")
@@ -112,7 +112,7 @@ def check_deaths():
                                     elif item_type == "consumable":
                                         new_item = f_in2.readline().split()
 
-                                        potential_item = Consumable(new_item[0], int(new_item[1]), int(new_item[2]))
+                                        potential_item = Consumable(new_item[0].replace('_', ' '), int(new_item[1]), int(new_item[2]))
                                         print("{} found {}.".format(player.get_name(), potential_item.get_name()))
                                         sleep(delay)
                                         potential_item.display()
@@ -206,14 +206,14 @@ while True:
                 # Randomly generates enemies scaled to level
                 average_lvl = sum([player.get_lvl() for player in players]) // len(players)
                 enemy_data = list()
-                enemy_data.append(["Boss",
+                enemy_data.append(["Endless Boss",
                                    average_lvl * 10 + randint(30, 50),
                                    average_lvl * 10 + randint(30, 50),
                                    average_lvl * 1 + randint(8, 12),
                                    average_lvl * 1 + randint(4, 6),
                                    average_lvl * 2])
                 for i in range(10):
-                    enemy_data.append(["Enemy",
+                    enemy_data.append(["Endless Enemy",
                                        average_lvl * 5 + randint(15, 25),
                                        average_lvl * 5 + randint(15, 25),
                                        average_lvl * 1 + randint(4, 6),
@@ -237,12 +237,11 @@ while True:
                                 enemy_data.append(new_enemy)
 
         # Spawns boss after 4 encounters
-        elif encounters == 4:
+        if encounters == 4:
             new_enemy = enemy_data[0]
             enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
             print("\nEncountered floor boss, {}.".format(enemies[-1].get_name()))
             sleep(delay)
-
         # Spawns normal enemy/enemies; spawns same amount as starting number of players
         else:
             print('')

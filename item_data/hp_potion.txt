@@ -1,0 +1,2 @@
+consumable
+HP_Potion 10 0
