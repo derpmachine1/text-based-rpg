@@ -148,8 +148,10 @@ enemies = list()
 enemy_data = list()  # Stores data of all possible enemies on current level
 
 # Start of the game
-print("Text Based RPG: A Text Based RPG")
-sleep(delay)
+print("Text Based RPG: ", end='')
+sleep(delay * 2)
+print("A Text Based RPG")
+sleep(delay * 2)
 input("Enter anything to start.")
 while True:
     p_input = input("Enter number of players.")
