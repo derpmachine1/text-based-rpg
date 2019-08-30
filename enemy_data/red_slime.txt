@@ -1,0 +1,5 @@
+Green_Slime 12 0 6 0 10
+ring_of_hp 10
+ring_of_mp 10
+hp_potion 20
+mp_potion 20

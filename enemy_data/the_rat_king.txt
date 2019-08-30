@@ -1,4 +1,4 @@
-Rat_King 25 0 5 0 15
+The_Rat_King 25 0 5 0 15
 stick 25
 garbage_bag 25
 hp_potion 50
