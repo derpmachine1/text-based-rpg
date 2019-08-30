@@ -1,0 +1,2 @@
+equipment
+Ring_of_MP ring 0 5 0 0

@@ -1,0 +1,6 @@
+Lancedor,_The_Rat_King 25 0 5 0 15
+lancedors_blade 10
+stick 25
+garbage_bag 25
+hp_potion 50
+mp_potion 50

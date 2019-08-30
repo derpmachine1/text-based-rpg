@@ -1,0 +1,6 @@
+X'dfw'wkf,_The_Slime_God 30 0 8 3 30
+xdfwwkfs_ring_of_life 10
+ring_of_hp 25
+ring_of_mp 25
+hp_potion 50
+mp_potion 50
