@@ -90,9 +90,11 @@ class Player(Entity):
 
     def change_hp(self, d_hp):
         self.hp += d_hp
+        self.hp = min(self.hp_max, self.hp)
 
     def change_mp(self, d_mp):
         self.mp += d_mp
+        self.mp = min(self.mp_max, self.mp)
 
     def change_exp(self, d_exp):
         self.exp += d_exp

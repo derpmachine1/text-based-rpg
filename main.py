@@ -255,6 +255,7 @@ while True:
 
     # Iterates through players' actions
     for player in players:
+        player.change_mp(1)
         display()
 
         print("\n{}'s turn.".format(player.get_name()))
