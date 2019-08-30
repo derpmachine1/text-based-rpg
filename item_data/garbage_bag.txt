@@ -1,0 +1,2 @@
+equipment
+Garbage_Bag armour 0 0 0 1

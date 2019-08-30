@@ -1,3 +1,5 @@
 Veteran_Rat 15 0 3 0 10
 stick 15
+garbage_bag 15
 hp_potion 30
+mp_potion 30

@@ -1,0 +1,2 @@
+consumable
+MP_Potion 0 10

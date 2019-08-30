@@ -211,14 +211,14 @@ while True:
                                    average_lvl * 16 + randint(-8, 8),
                                    average_lvl * 4 + randint(-2, 2),
                                    average_lvl * 4 + randint(-2, 2),
-                                   average_lvl * 4])
+                                   average_lvl * 6])
                 for i in range(10):
                     enemy_data.append(["Endless Enemy",
                                        average_lvl * 8 + randint(-4, 4),
                                        average_lvl * 8 + randint(-4, 4),
                                        average_lvl * 2 + randint(-1, 1),
                                        average_lvl * 2 + randint(-1, 1),
-                                       average_lvl * 2])
+                                       average_lvl * 3])
 
             else:
                 stage += 1

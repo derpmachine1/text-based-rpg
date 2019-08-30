@@ -1,3 +1,5 @@
 Black_Rat 8 0 4 0 5
 stick 10
+garbage_bag 10
 hp_potion 20
+mp_potion 20
