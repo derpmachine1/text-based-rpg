@@ -1,4 +1,4 @@
-the_rat_king 1
+lancedor,_the_rat_king 1
 brown_rat 3
 black_rat 2
 veteran_rat 1
