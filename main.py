@@ -44,7 +44,7 @@ def check_deaths():
                     player.lvl_up()
 
                 # Rolls for items
-                with open("enemy_data/{}.txt".format(enemies[e].get_name().replace(' ', '_'))) as f_in:
+                with open("enemy_data/{}.txt".format(enemies[e].get_name().lower().replace(' ', '_'))) as f_in:
                     enemy = f_in.readlines()
                     if len(enemy) > 1:  # Item drops of enemy are stored after first line of enemy file
                         for item_drop in enemy[1:]:
