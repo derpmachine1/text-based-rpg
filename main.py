@@ -38,10 +38,10 @@ def check_deaths():
                 player.change_exp(enemies[e].get_exp())
                 print("{} gained {} EXP.".format(player.get_name(), enemies[e].get_exp()))
                 sleep(delay)
-                if player.check_lvl():
-                    print("{} leveled up to level {}.".format(player.get_name(), player.get_lvl() + 1))
-                    sleep(delay)
+                while player.check_lvl():
                     player.lvl_up()
+                    print("{} leveled up to level {}.".format(player.get_name(), player.get_lvl()))
+                    sleep(delay)
 
                 # Rolls for items
                 with open("enemy_data/{}.txt".format(enemies[e].get_name().lower().replace(' ', '_'))) as f_in:
