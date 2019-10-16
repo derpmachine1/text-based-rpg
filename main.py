@@ -1,6 +1,7 @@
 from time import sleep
 from random import randint
 from os import listdir
+
 from player import Player
 from enemy import Enemy
 from equipment import Equipment
@@ -48,7 +49,7 @@ def check_deaths():
                     enemy = f_in.readlines()
                     if len(enemy) > 1:  # Item drops of enemy are stored after first line of enemy file
                         for item_drop in enemy[1:]:
-                            if randint(1, 100) <= int(item_drop.split()[1]):
+                            if randint(1, 100) <= int(item_drop.split()[1]):  # Rolls for item
                                 with open("item_data/{}.txt".format(item_drop.split()[0])) as f_in2:
                                     item_type = f_in2.readline().strip()
 
@@ -68,7 +69,7 @@ def check_deaths():
                                                 p_input = input("'T' to take equipment, 'D' to discard equipment.")
                                                 if p_input.lower() == 't':
                                                     player.add_equipment(potential_equip)
-                                                    print("{} took {}.".format(player.get_name(), player.get_equipment()[-1].get_name()))
+                                                    print("{} took {}.".format(player.get_name(), potential_equip.get_name()))
                                                     sleep(delay)
                                                     break
                                                 elif p_input.lower() == 'd':
@@ -86,7 +87,7 @@ def check_deaths():
                                             sleep(delay)
                                             print("Old:")
                                             sleep(delay)
-                                            player.get_equipment()[player.check_equipment_type(new_item[1])].display()
+                                            player.get_equipment()[player.check_equipment_type(potential_equip.get_type())].display()
                                             sleep(delay)
                                             print("New:")
                                             sleep(delay)
@@ -96,12 +97,12 @@ def check_deaths():
                                             while True:
                                                 p_input = input("'T' to take new equipment, 'K' to keep old equipment.")
                                                 if p_input.lower() == 't':
+                                                    print("{} discarded {} and took {}.".format(player.get_name(), player.get_equipment()[player.check_equipment_type(potential_equip.get_type())].get_name(), potential_equip.get_name()))
                                                     player.add_equipment(potential_equip)
-                                                    print("{} discarded {} and took {}.".format(player.get_name(), player.get_equipment()[player.check_equipment_type(new_item[1])].get_name(), player.get_equipment()[-1].get_name()))
                                                     sleep(delay)
                                                     break
                                                 elif p_input.lower() == 'k':
-                                                    print("{} discarded {} and kept {}.".format(player.get_name(), potential_equip.get_name(), player.get_equipment()[player.check_equipment_type(new_item[1])].get_name()))
+                                                    print("{} discarded {} and kept {}.".format(player.get_name(), potential_equip.get_name(), player.get_equipment()[player.check_equipment_type(potential_equip.get_type())].get_name()))
                                                     sleep(delay)
                                                     break
                                                 else:
@@ -122,7 +123,7 @@ def check_deaths():
                                             p_input = input("'T' to take item, 'D' to discard item.")
                                             if p_input.lower() == 't':
                                                 player.add_item(potential_item)
-                                                print("{} took {}.".format(player.get_name(), player.get_items()[-1].get_name()))
+                                                print("{} took {}.".format(player.get_name(), potential_item.get_name()))
                                                 sleep(delay)
                                                 break
                                             elif p_input.lower() == 'd':
@@ -306,7 +307,7 @@ while True:
                             equipment.display()
                             sleep(delay)
 
-                        p_input = input("Enter name of equipment to interact with, 'E' to stop checking equipment.")
+                        p_input = input("Enter name of equipment to interact with it, 'E' to stop checking equipment.")
                         if p_input.lower() == 'e':
                             break
                         else:
@@ -346,7 +347,7 @@ while True:
                             item.display()
                             sleep(delay)
 
-                        p_input = input("Type name of item to interact with, 'I' to stop checking inventory.")
+                        p_input = input("Enter name of item to interact with it, 'I' to stop checking inventory.")
                         if p_input.lower() == 'i':
                             break
                         else:
