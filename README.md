@@ -4,4 +4,4 @@ A minimalistic text-based RPG, made in Python.
 
 Run main.py to open.
 
-![Screenshot of Program](doc/screenshot_1.png)
+![Screenshot of Program](docs/screenshot_1.png)
