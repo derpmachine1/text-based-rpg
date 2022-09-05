@@ -2,7 +2,7 @@
 
 A basic text-based RPG. Made with Python.
 
-## How to Run
+## Instructions
 
 1. Run main.py.
 
