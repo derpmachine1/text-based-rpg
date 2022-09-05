@@ -1,7 +1,9 @@
 # text-based-rpg
 
-A minimalistic text-based RPG, made in Python.
+A basic text-based RPG. Written in Python.
 
-Run main.py to open.
+## How to Run
+
+1. Run main.py.
 
 ![Screenshot of Program](docs/screenshot_1.png)
