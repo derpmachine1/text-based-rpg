@@ -1,6 +1,6 @@
 # text-based-rpg
 
-A basic text-based RPG. Made with Python.
+A basic text-based RPG. Made in Python.
 
 ## How to Run
 
