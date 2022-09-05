@@ -6,4 +6,4 @@ A basic text-based RPG. Made with Python.
 
 1. Run `main.py` to start the program.
 
-![Screenshot of Program](docs/screenshot_1.png)
+![Screenshot of Project](docs/screenshot_1.png)
