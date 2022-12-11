@@ -1,6 +1,6 @@
 from time import sleep
 from random import randint
-from os import listdir
+from os import listdir, path
 
 from player import Player
 from enemy import Enemy
@@ -8,8 +8,12 @@ from equipment import Equipment
 from consumable import Consumable
 
 
+def get_abs_path(rel_path):
+    return path.join(path.dirname(__file__), rel_path)
+
+
 # Displays stats of all players and enemies
-def display():
+def display(players, enemies, delay):
     for player in players:
         print('')
         player.display()
@@ -21,7 +25,7 @@ def display():
     sleep(delay)
     
 
-def check_deaths():
+def check_deaths(players, enemies, enemy_data, delay):
     for p in range(len(players)):
         if players[p].is_dead():
             print("\n{} was defeated.".format(players[p].get_name()))
@@ -45,12 +49,12 @@ def check_deaths():
                     sleep(delay)
 
                 # Rolls for items
-                with open("enemy_data/{}.txt".format(enemies[e].get_name().lower().replace(' ', '_'))) as f_in:
+                with open(get_abs_path("enemy_data/{}.txt".format(enemies[e].get_name().lower().replace(' ', '_')))) as f_in:
                     enemy = f_in.readlines()
                     if len(enemy) > 1:  # Item drops of enemy are stored after first line of enemy file
                         for item_drop in enemy[1:]:
                             if randint(1, 100) <= int(item_drop.split()[1]):  # Rolls for item
-                                with open("item_data/{}.txt".format(item_drop.split()[0])) as f_in2:
+                                with open(get_abs_path("item_data/{}.txt".format(item_drop.split()[0]))) as f_in2:
                                     item_type = f_in2.readline().strip()
 
                                     # For equipment items
@@ -137,284 +141,289 @@ def check_deaths():
             del enemies[e]
 
 
-delay = 0.5  # Time delay between text
+def main():
+    total_stages = len(listdir(get_abs_path('stage_data')))  # Total number of stages built into the game
+    stage = 1  # Stage of the game
+    encounters = 0  # Number of enemy encounters in current level thus far
 
-total_stages = len(listdir('stage_data'))  # Total number of stages built into the game
-stage = 1  # Stage of the game
-encounters = 0  # Number of enemy encounters in current level thus far
+    players = list()
+    enemies = list()
 
-players = list()
-enemies = list()
+    enemy_data = list()  # Stores data of all possible enemies on current level
 
-enemy_data = list()  # Stores data of all possible enemies on current level
+    delay = 0.5  # Time delay between text
 
-# Start of the game
-print("Text Based RPG: ", end='')
-sleep(delay * 2)
-print("A Text Based RPG")
-sleep(delay * 2)
-input("Enter anything to start.")
-while True:
-    p_input = input("Enter number of players.")
-    try:
-        p_input = int(p_input)
-    except ValueError:
-        print("Invalid response: Expected whole number.")
-        sleep(delay)
-    else:
-        if p_input >= 1:
-            for i in range(p_input):
-                p_input = input("Enter name of player {}.".format(i + 1))
-                players.append(Player(p_input, 1))
-                print("Player {} created.".format(p_input))
-                sleep(delay)
-            break
-        else:
-            print("Invalid response: Must have at least 1 player.")
-            sleep(delay)        
-
-starting_players = len(players)
-            
-# Setup for first stage
-print("\nEntering floor 1.")
-sleep(delay)
-enemy_data = list()
-with open("stage_data/1.txt", 'r') as f_in:
-    for enemy in f_in.readlines():
-        with open("enemy_data/{}.txt".format(enemy.split()[0])) as f_in2:
-            new_enemy = f_in2.readline().split()
-            for i in range(int(enemy.split()[1])):
-                enemy_data.append(new_enemy)
-
-while True:
-    # If no players left, lose
-    if len(players) == 0:
-        break
-
-    # If no enemies left
-    if len(enemies) == 0:
-        # If finished level (4 normal encounters + boss encounter)
-        if encounters == 5:
-            print("\nFloor {} cleared.".format(stage))
+    # Start of the game
+    print("Text Based RPG: ", end='')
+    sleep(delay * 2)
+    print("A Text Based RPG")
+    sleep(delay * 2)
+    input("Enter anything to start.")
+    while True:
+        p_input = input("Enter number of players.")
+        try:
+            p_input = int(p_input)
+        except ValueError:
+            print("Invalid response: Expected whole number.")
             sleep(delay)
-
-            # Activates endless mode if finished all programmed stages
-            if stage == total_stages or stage == 0:
-                stage = 0
-                encounters = 0
-
-                print("\nEntering endless floor.")
-                sleep(delay)
-
-                # Randomly generates enemies scaled to level
-                average_lvl = sum([player.get_lvl() for player in players]) // len(players)
-                enemy_data = list()
-                enemy_data.append(["Endless Boss",
-                                   average_lvl * 16 + randint(-8, 8),
-                                   average_lvl * 16 + randint(-8, 8),
-                                   average_lvl * 4 + randint(-2, 2),
-                                   average_lvl * 4 + randint(-2, 2),
-                                   average_lvl * 6])
-                for i in range(10):
-                    enemy_data.append(["Endless Enemy",
-                                       average_lvl * 8 + randint(-4, 4),
-                                       average_lvl * 8 + randint(-4, 4),
-                                       average_lvl * 2 + randint(-1, 1),
-                                       average_lvl * 2 + randint(-1, 1),
-                                       average_lvl * 3])
-
-            else:
-                stage += 1
-                encounters = 0
-
-                print("\nEntering floor {}.".format(stage))
-                sleep(delay)
-
-                # Reads and stores enemy data for new level
-                enemy_data = list()
-                with open("stage_data/{}.txt".format(stage), 'r') as f_in:
-                    for enemy in f_in.readlines():
-                        with open("enemy_data/{}.txt".format(enemy.split()[0])) as f_in2:
-                            new_enemy = f_in2.readline().split()
-                            for i in range(int(enemy.split()[1])):
-                                enemy_data.append(new_enemy)
-
-        # Spawns boss after 4 encounters
-        if encounters == 4:
-            new_enemy = enemy_data[0]
-            enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
-            print("\nEncountered floor boss, {}.".format(enemies[-1].get_name()))
-            sleep(delay)
-        # Spawns normal enemy/enemies; spawns same amount as starting number of players
         else:
-            print('')
-            for i in range(starting_players):
-                new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
-                enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
-                print("Encountered {}.".format(enemies[-1].get_name()))
-                sleep(delay)
-
-        encounters += 1
-
-    # Iterates through players' actions
-    for player in players:
-        player.change_mp(1)
-        display()
-
-        print("\n{}'s turn.".format(player.get_name()))
-        sleep(delay)
-
-        # Gets player's input, keeps trying until input is valid
-        while True:
-            p_input = input("'A' to attack, 'E' to check equipment, 'I' to check inventory.").strip()
-            if p_input.lower() == 'a':
-                # If more than 1 enemy, asks which one to target
-                if len(enemies) > 1:
-                    # Gets player's input, keeps trying until input is valid
-                    while True:
-                        p_input = input("Enter location of enemy to target.").strip()
-                        try:
-                            p_input = int(p_input) - 1  # Calculates actual index by subtracting location by 1
-                            player.attack_entity(enemies[p_input])
-                            print("{} attacked {} for {} HP.".format(player.get_name(), enemies[p_input].get_name(), player.attack_entity_damage(enemies[p_input])))
-                            sleep(delay)
-                            break
-                        except ValueError:
-                            print("Invalid response: Expected whole number.")
-                            sleep(delay)
-                        except IndexError:
-                            print("Invalid response: No enemy at inputted location.")
-                            sleep(delay)
-                    break
-                # If just 1 enemy, automatically targets it
-                else:
-                    player.attack_entity(enemies[0])
-                    print("{} attacked {} for {} HP.".format(player.get_name(), enemies[0].get_name(), player.attack_entity_damage(enemies[0])))
+            if p_input >= 1:
+                for i in range(p_input):
+                    p_input = input("Enter name of player {}.".format(i + 1))
+                    players.append(Player(p_input, 1))
+                    print("Player {} created.".format(p_input))
                     sleep(delay)
-                    break
-
-            elif p_input.lower() == 'e':
-                print('')
-                while True:
-                    if len(player.get_equipment()) == 0:
-                        print("{} has no equipment.".format(player.get_name()))
-                        sleep(delay)
-                        break
-                    else:
-                        print("{} has:".format(player.get_name()))
-                        sleep(delay)
-                        for equipment in player.get_equipment():
-                            equipment.display()
-                            sleep(delay)
-
-                        p_input = input("Enter name of equipment to interact with it, 'E' to stop checking equipment.")
-                        if p_input.lower() == 'e':
-                            break
-                        else:
-                            for e in range(len(player.get_equipment())):
-                                if p_input.lower() == player.get_equipment()[e].get_name().lower():
-                                    player.get_equipment()[e].display()
-                                    sleep(delay)
-                                    
-                                    p_input = input("'D' to discard equipment, 'K' to keep equipment.")
-                                    while True:
-                                        if p_input.lower() == 'd':
-                                            print("{} discarded {}.".format(player.get_name(), player.get_equipment()[e].get_name()))
-                                            sleep(delay)
-                                            player.remove_equipment(e)
-                                            break
-                                        elif p_input.lower() == 'k':
-                                            print("{} kept {}.".format(player.get_name(), player.get_equipment()[e].get_name()))
-                                            break
-                                        else:
-                                            print("Invalid response: Expected 'D' or 'K'.")
-                                            sleep(delay)
-
-                                    break
-                print('')
-
-            elif p_input.lower() == 'i':
-                print('')
-                while True:
-                    if len(player.get_items()) == 0:
-                        print("{} has no items.".format(player.get_name()))
-                        sleep(delay)
-                        break
-                    else:
-                        print("{} has:".format(player.get_name()))
-                        sleep(delay)
-                        for item in player.get_items():
-                            item.display()
-                            sleep(delay)
-
-                        p_input = input("Enter name of item to interact with it, 'I' to stop checking inventory.")
-                        if p_input.lower() == 'i':
-                            break
-                        else:
-                            for i in range(len(player.get_items())):
-                                if p_input.lower() == player.get_items()[i].get_name().lower():
-                                    player.get_items()[i].display()
-                                    sleep(delay)
-                                    
-                                    p_input = input("'U' to use item, 'D' to discard item, 'K' to keep item.")
-                                    while True:
-                                        if p_input.lower() == 'u':
-                                            print("{} used {}.".format(player.get_name(), player.get_items()[i].get_name()))
-                                            sleep(delay)
-                                            player.use_item_display(i)
-                                            sleep(delay)
-                                            player.use_item(i)
-                                            break
-                                        elif p_input.lower() == 'd':
-                                            print("{} discarded {}.".format(player.get_name(), player.get_items()[i].get_name()))
-                                            sleep(delay)
-                                            player.remove_item(i)
-                                            break
-                                        elif p_input.lower() == 'k':
-                                            print("{} kept {}.".format(player.get_name(), player.get_items()[i].get_name()))
-                                            break
-                                        else:
-                                            print("Invalid response: Expected 'U', 'D', or 'K'.")
-                                            sleep(delay)
-
-                                    break
-                print('')
-
+                break
             else:
-                print("Invalid response: Expected 'A', 'E', or 'I'.")
+                print("Invalid response: Must have at least 1 player.")
+                sleep(delay)        
+
+    starting_players = len(players)
+                
+    # Setup for first stage
+    print("\nEntering floor 1.")
+    sleep(delay)
+    enemy_data = list()
+    with open(get_abs_path("stage_data/1.txt"), 'r') as f_in:
+        for enemy in f_in.readlines():
+            with open(get_abs_path("enemy_data/{}.txt".format(enemy.split()[0]))) as f_in2:
+                new_enemy = f_in2.readline().split()
+                for i in range(int(enemy.split()[1])):
+                    enemy_data.append(new_enemy)
+
+    while True:
+        # If no players left, lose
+        if len(players) == 0:
+            break
+
+        # If no enemies left
+        if len(enemies) == 0:
+            # If finished level (4 normal encounters + boss encounter)
+            if encounters == 5:
+                print("\nFloor {} cleared.".format(stage))
                 sleep(delay)
 
-        check_deaths()
+                # Activates endless mode if finished all programmed stages
+                if stage == total_stages or stage == 0:
+                    stage = 0
+                    encounters = 0
 
-    # Iterates through enemies' actions
-    for enemy in enemies:
-        display()
+                    print("\nEntering endless floor.")
+                    sleep(delay)
 
-        print("\n{}'s turn.".format(enemy.get_name()))
-        sleep(delay)
+                    # Randomly generates enemies scaled to level
+                    average_lvl = sum([player.get_lvl() for player in players]) // len(players)
+                    enemy_data = list()
+                    enemy_data.append(["Endless Boss",
+                                    average_lvl * 16 + randint(-8, 8),
+                                    average_lvl * 16 + randint(-8, 8),
+                                    average_lvl * 4 + randint(-2, 2),
+                                    average_lvl * 4 + randint(-2, 2),
+                                    average_lvl * 6])
+                    for i in range(10):
+                        enemy_data.append(["Endless Enemy",
+                                        average_lvl * 8 + randint(-4, 4),
+                                        average_lvl * 8 + randint(-4, 4),
+                                        average_lvl * 2 + randint(-1, 1),
+                                        average_lvl * 2 + randint(-1, 1),
+                                        average_lvl * 3])
 
-        # If more than 1 player, targets player that would end up with the lowest health if attacked
-        if len(players) > 1:            
-            target = 0  # Index of target
+                else:
+                    stage += 1
+                    encounters = 0
 
-            # Stores resulting health if first player was attacked
-            target_hp = players[0].get_hp() - enemy.attack_entity_damage(players[0])
+                    print("\nEntering floor {}.".format(stage))
+                    sleep(delay)
 
-            # Iterates starting from second player
-            for p in range(1, len(players)):
-                if players[p].get_hp() - enemy.attack_entity_damage(players[p]) < target_hp:
-                    target = p
-                    target_hp = players[p].get_hp() - enemy.attack_entity_damage(players[p])
-            
-            enemy.attack_entity(players[target])
-            print("Attacked {} for {} HP.".format(players[target].get_name(), enemy.attack_entity_damage(players[target])))
+                    # Reads and stores enemy data for new level
+                    enemy_data = list()
+                    with open(get_abs_path("stage_data/{}.txt".format(stage)), 'r') as f_in:
+                        for enemy in f_in.readlines():
+                            with open(get_abs_path("enemy_data/{}.txt".format(enemy.split()[0]))) as f_in2:
+                                new_enemy = f_in2.readline().split()
+                                for i in range(int(enemy.split()[1])):
+                                    enemy_data.append(new_enemy)
+
+            # Spawns boss after 4 encounters
+            if encounters == 4:
+                new_enemy = enemy_data[0]
+                enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
+                print("\nEncountered floor boss, {}.".format(enemies[-1].get_name()))
+                sleep(delay)
+            # Spawns normal enemy/enemies; spawns same amount as starting number of players
+            else:
+                print('')
+                for i in range(starting_players):
+                    new_enemy = enemy_data[randint(1, len(enemy_data) - 1)]
+                    enemies.append(Enemy(new_enemy[0].replace('_', ' '), int(new_enemy[1]), int(new_enemy[2]), int(new_enemy[3]), int(new_enemy[4]), int(new_enemy[5])))
+                    print("Encountered {}.".format(enemies[-1].get_name()))
+                    sleep(delay)
+
+            encounters += 1
+
+        # Iterates through players' actions
+        for player in players:
+            player.change_mp(1)
+            display(players, enemies, delay)
+
+            print("\n{}'s turn.".format(player.get_name()))
             sleep(delay)
-        # If just 1 player, automatically targets it
-        else:
-            enemy.attack_entity(players[0])
-            print("Attacked {} for {} HP.".format(players[0].get_name(), enemy.attack_entity_damage(players[0])))
-            sleep(delay)
-    
-        check_deaths()
 
-print("\nGame over.")
+            # Gets player's input, keeps trying until input is valid
+            while True:
+                p_input = input("'A' to attack, 'E' to check equipment, 'I' to check inventory.").strip()
+                if p_input.lower() == 'a':
+                    # If more than 1 enemy, asks which one to target
+                    if len(enemies) > 1:
+                        # Gets player's input, keeps trying until input is valid
+                        while True:
+                            p_input = input("Enter location of enemy to target.").strip()
+                            try:
+                                p_input = int(p_input) - 1  # Calculates actual index by subtracting location by 1
+                                player.attack_entity(enemies[p_input])
+                                print("{} attacked {} for {} HP.".format(player.get_name(), enemies[p_input].get_name(), player.attack_entity_damage(enemies[p_input])))
+                                sleep(delay)
+                                break
+                            except ValueError:
+                                print("Invalid response: Expected whole number.")
+                                sleep(delay)
+                            except IndexError:
+                                print("Invalid response: No enemy at inputted location.")
+                                sleep(delay)
+                        break
+                    # If just 1 enemy, automatically targets it
+                    else:
+                        player.attack_entity(enemies[0])
+                        print("{} attacked {} for {} HP.".format(player.get_name(), enemies[0].get_name(), player.attack_entity_damage(enemies[0])))
+                        sleep(delay)
+                        break
+
+                elif p_input.lower() == 'e':
+                    print('')
+                    while True:
+                        if len(player.get_equipment()) == 0:
+                            print("{} has no equipment.".format(player.get_name()))
+                            sleep(delay)
+                            break
+                        else:
+                            print("{} has:".format(player.get_name()))
+                            sleep(delay)
+                            for equipment in player.get_equipment():
+                                equipment.display()
+                                sleep(delay)
+
+                            p_input = input("Enter name of equipment to interact with it, 'E' to stop checking equipment.")
+                            if p_input.lower() == 'e':
+                                break
+                            else:
+                                for e in range(len(player.get_equipment())):
+                                    if p_input.lower() == player.get_equipment()[e].get_name().lower():
+                                        player.get_equipment()[e].display()
+                                        sleep(delay)
+                                        
+                                        p_input = input("'D' to discard equipment, 'K' to keep equipment.")
+                                        while True:
+                                            if p_input.lower() == 'd':
+                                                print("{} discarded {}.".format(player.get_name(), player.get_equipment()[e].get_name()))
+                                                sleep(delay)
+                                                player.remove_equipment(e)
+                                                break
+                                            elif p_input.lower() == 'k':
+                                                print("{} kept {}.".format(player.get_name(), player.get_equipment()[e].get_name()))
+                                                break
+                                            else:
+                                                print("Invalid response: Expected 'D' or 'K'.")
+                                                sleep(delay)
+
+                                        break
+                    print('')
+
+                elif p_input.lower() == 'i':
+                    print('')
+                    while True:
+                        if len(player.get_items()) == 0:
+                            print("{} has no items.".format(player.get_name()))
+                            sleep(delay)
+                            break
+                        else:
+                            print("{} has:".format(player.get_name()))
+                            sleep(delay)
+                            for item in player.get_items():
+                                item.display()
+                                sleep(delay)
+
+                            p_input = input("Enter name of item to interact with it, 'I' to stop checking inventory.")
+                            if p_input.lower() == 'i':
+                                break
+                            else:
+                                for i in range(len(player.get_items())):
+                                    if p_input.lower() == player.get_items()[i].get_name().lower():
+                                        player.get_items()[i].display()
+                                        sleep(delay)
+                                        
+                                        p_input = input("'U' to use item, 'D' to discard item, 'K' to keep item.")
+                                        while True:
+                                            if p_input.lower() == 'u':
+                                                print("{} used {}.".format(player.get_name(), player.get_items()[i].get_name()))
+                                                sleep(delay)
+                                                player.use_item_display(i)
+                                                sleep(delay)
+                                                player.use_item(i)
+                                                break
+                                            elif p_input.lower() == 'd':
+                                                print("{} discarded {}.".format(player.get_name(), player.get_items()[i].get_name()))
+                                                sleep(delay)
+                                                player.remove_item(i)
+                                                break
+                                            elif p_input.lower() == 'k':
+                                                print("{} kept {}.".format(player.get_name(), player.get_items()[i].get_name()))
+                                                break
+                                            else:
+                                                print("Invalid response: Expected 'U', 'D', or 'K'.")
+                                                sleep(delay)
+
+                                        break
+                    print('')
+
+                else:
+                    print("Invalid response: Expected 'A', 'E', or 'I'.")
+                    sleep(delay)
+
+            check_deaths(players, enemies, enemy_data, delay)
+
+        # Iterates through enemies' actions
+        for enemy in enemies:
+            display(players, enemies, delay)
+
+            print("\n{}'s turn.".format(enemy.get_name()))
+            sleep(delay)
+
+            # If more than 1 player, targets player that would end up with the lowest health if attacked
+            if len(players) > 1:            
+                target = 0  # Index of target
+
+                # Stores resulting health if first player was attacked
+                target_hp = players[0].get_hp() - enemy.attack_entity_damage(players[0])
+
+                # Iterates starting from second player
+                for p in range(1, len(players)):
+                    if players[p].get_hp() - enemy.attack_entity_damage(players[p]) < target_hp:
+                        target = p
+                        target_hp = players[p].get_hp() - enemy.attack_entity_damage(players[p])
+                
+                enemy.attack_entity(players[target])
+                print("Attacked {} for {} HP.".format(players[target].get_name(), enemy.attack_entity_damage(players[target])))
+                sleep(delay)
+            # If just 1 player, automatically targets it
+            else:
+                enemy.attack_entity(players[0])
+                print("Attacked {} for {} HP.".format(players[0].get_name(), enemy.attack_entity_damage(players[0])))
+                sleep(delay)
+        
+            check_deaths(players, enemies, enemy_data, delay)
+
+    print("\nGame over.")
+
+
+if __name__ == "__main__":
+    main()
