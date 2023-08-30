@@ -2,4 +2,4 @@
 
 Basic text-based RPG. Uses Python.
 
-![Image of the project.](doc/project.png)
+![Image of the project.](docs/project.png)
